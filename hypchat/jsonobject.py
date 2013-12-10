@@ -57,11 +57,16 @@ class JsonObject(dict):
 		else:
 			raise AttributeError("%r object has no attribute %r" % (type(self).__name__, name))
 
+	@property
+	def url(self):
+		return self['links']['self']
+
 	def save(self):
-		return requests.put(self['links']['self']).json()
+		return requests.put(self.url).json()
 
 	def delete(self):
-		return requests.delete(self['links']['self']).json()
+		return requests.delete(self.url).json()
+
 
 class Room(JsonObject):
 	def message(self, *p, **kw):
@@ -85,7 +90,7 @@ class Room(JsonObject):
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
 
 class User(JsonObject):
-	def message(self, ...):
+	def message(self, message):
 		raise NotImplementedError
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user/[^/]+')] = User
