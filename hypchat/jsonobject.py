@@ -17,7 +17,13 @@ class Linker(object):
 	def __call__(self, expand=None):
 		def _object_hook(obj):
 			if 'links' in obj:
-				rv = JsonObject(obj)
+				klass = JsonObject
+				if 'self' in obj['links']:
+					for p, c in _urls_to_objects.iteritems():
+						if p.match(obj['links']['self']):
+							klass = c
+							break
+				rv = klass(obj)
 				rv._requests = self._requests
 				return rv
 			else:
