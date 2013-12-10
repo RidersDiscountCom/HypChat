@@ -36,3 +36,20 @@ class HypChat(object):
 
 	def fromurl(self, url):
 		return Linker(url, _requests=self._requests)()
+
+	def create_room(self, name, owner=Ellipsis, privacy='public', guest_access=True):
+		"""
+		Creates a new room.
+		"""
+		data={
+			'name': name,
+			'privacy': privacy,
+			'guest_access': guest_access,
+		}
+		if owner is not Ellipsis:
+			if owner is None:
+				data['owner_user_id'] = owner
+			else:
+				data['owner_user_id'] = owner['id']
+		resp = self._requests.post(self.rooms.url, data=data)
+		return Linker._obj_from_text(resp.text)
