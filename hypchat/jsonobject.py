@@ -83,3 +83,9 @@ class Room(JsonObject):
 		raise NotImplementedError
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
+
+class User(JsonObject):
+	def message(self, ...):
+		raise NotImplementedError
+
+_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user/[^/]+')] = User
