@@ -14,7 +14,7 @@ class Linker(object):
 		self.__parent = parent
 		self._requests = _requests or __import__('requests')
 
-	def __call__(self):
+	def __call__(self, expand=None):
 		def _object_hook(obj):
 			if 'links' in obj:
 				rv = JsonObject(obj)
@@ -23,7 +23,14 @@ class Linker(object):
 			else:
 				return obj
 
-		rv = json.JSONDecoder(object_hook=_object_hook).decode(self._requests.get(self.url).text)
+		params = None
+		if expand is not None:
+			if isinstance(expand, basestring):
+				params = {'expand': expand}
+			else:
+				params = {'expand': ','.join(expand)}
+
+		rv = json.JSONDecoder(object_hook=_object_hook).decode(self._requests.get(self.url, params=params).text)
 		rv._requests = self._requests
 		if self.__parent is not None:
 			rv.parent = self.__parent
