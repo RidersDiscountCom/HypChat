@@ -3,7 +3,7 @@
 	[
 		{
 			"follow_symlinks": true,
-			"path": "/home/james/code/HypChat"
+			"path": "."
 		}
 	]
 }
