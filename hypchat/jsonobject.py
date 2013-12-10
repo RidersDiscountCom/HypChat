@@ -71,21 +71,42 @@ class JsonObject(dict):
 class Room(JsonObject):
 	def message(self, *p, **kw):
 		"""
-		Redirects to notification (for now)
+		Redirects to the /notification URL.
+
+		Will soon be reimplemented as a resource that posts a message to a room as a user.
 		"""
 		return self.notification(*p, **kw)
 
 	def notification(self, message, color='yellow', notify=False, format='html'):
-		raise NotImplementedError
+		"""
+		Send a message to a room.
+		"""
+		requests.post(self.url+'/notification', data={
+			'color': color,
+			'message': message,
+			'notify': notify,
+			'message_format': format,
+		})
 
 	def topic(self, text):
-		raise NotImplementedError
+		"""
+		Set a room's topic. Useful for displaying statistics, important links, server status, you name it!
+		"""
+		requests.put(self.url+'/topic', data={
+			'topic': text,
+		})
 
 	def history(self, date='recent'):
+		# TODO: If given an aware datetime, pass its timezone along
 		raise NotImplementedError
 
 	def invite(self, user, reason):
-		raise NotImplementedError
+		requests.post(self.url+'/invite/%s' % user['id'], data={
+			'reason': reason,
+		})
+
+
+# TODO: Add/remove people from rooms
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
 
