@@ -1,6 +1,9 @@
 from __future__ import absolute_import, division
 import json
+import re
 from . import requests
+
+_urls_to_objects = {}
 
 class Linker(object):
 	"""
@@ -43,3 +46,27 @@ class JsonObject(dict):
 
 	def save(self):
 		return requests.put(self['links']['self']).json()
+
+	def delete(self):
+		return requests.delete(self['links']['self']).json()
+
+class Room(JsonObject):
+	def message(self, *p, **kw):
+		"""
+		Redirects to notification (for now)
+		"""
+		return self.notification(*p, **kw)
+
+	def notification(self, message, color='yellow', notify=False, format='html'):
+		raise NotImplementedError
+
+	def topic(self, text):
+		raise NotImplementedError
+
+	def history(self, date='recent'):
+		raise NotImplementedError
+
+	def invite(self, user, reason):
+		raise NotImplementedError
+
+_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
