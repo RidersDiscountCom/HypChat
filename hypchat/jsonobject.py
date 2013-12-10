@@ -9,12 +9,17 @@ class Linker(object):
 	"""
 	Responsible for on-demand loading of JSON objects.
 	"""
+	url = None
 	def __init__(self, url, parent=None, _requests=None):
 		self.url = url
 		self.__parent = parent
 		self._requests = _requests or __import__('requests')
 
-	def __call__(self, expand=None):
+	@staticmethod
+	def _obj_from_text(text):
+		"""
+		Constructs objects (including our wrapper classes) from a JSON-formatted string
+		"""
 		def _object_hook(obj):
 			if 'links' in obj:
 				klass = JsonObject
@@ -28,7 +33,12 @@ class Linker(object):
 				return rv
 			else:
 				return obj
+		return json.JSONDecoder(object_hook=_object_hook).decode(text)
 
+	def __call__(self, expand=None):
+		"""
+		Actually perform the request
+		"""
 		params = None
 		if expand is not None:
 			if isinstance(expand, basestring):
@@ -36,7 +46,7 @@ class Linker(object):
 			else:
 				params = {'expand': ','.join(expand)}
 
-		rv = json.JSONDecoder(object_hook=_object_hook).decode(self._requests.get(self.url, params=params).text)
+		rv = self._obj_from_text(self._requests.get(self.url, params=params).text)
 		rv._requests = self._requests
 		if self.__parent is not None:
 			rv.parent = self.__parent
