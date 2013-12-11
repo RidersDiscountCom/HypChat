@@ -105,11 +105,10 @@ class HttpNotAcceptable(HttpClientError):
 	selection of the most appropriate choice MAY be performed automatically. However, this 
 	specification does not define any standard for such automatic selection.
 
-		Note: HTTP/1.1 servers are allowed to return responses which are
-		not acceptable according to the accept headers sent in the
-		request. In some cases, this may even be preferable to sending a
-		406 response. User agents are encouraged to inspect the headers of
-		an incoming response to determine if it is acceptable.
+		Note: HTTP/1.1 servers are allowed to return responses which are not acceptable according 
+		to the accept headers sent in the request. In some cases, this may even be preferable to 
+		sending a 406 response. User agents are encouraged to inspect the headers of an incoming 
+		response to determine if it is acceptable.
 	
 	If the response could be unacceptable, a user agent SHOULD temporarily stop receipt of more 
 	data and query the user for a decision on further actions.
@@ -249,8 +248,77 @@ class HttpExpectationFailed(HttpClientError):
 	"""
 _http_errors[417] = HttpExpectationFailed
 
+
 class HttpServerError(HttpError):
-	pass
+	"""Server Error 5xx
+
+	Response status codes beginning with the digit "5" indicate cases in which the server is aware 
+	that it has erred or is incapable of performing the request. Except when responding to a HEAD 
+	request, the server SHOULD include an entity containing an explanation of the error situation, 
+	and whether it is a temporary or permanent condition. User agents SHOULD display any included 
+	entity to the user. These response codes are applicable to any request method.
+	"""
+
+class HttpInternalServerError(HttpServerError):
+	"""500 Internal Server Error
+
+	The server encountered an unexpected condition which prevented it from fulfilling the request.
+	"""
+_http_errors[500] = HttpInternalServerError
+
+class HttpNotImplemented(HttpServerError, NotImplementedError):
+	"""501 Not Implemented
+
+	The server does not support the functionality required to fulfill the request. This is the 
+	appropriate response when the server does not recognize the request method and is not capable 
+	of supporting it for any resource.
+	"""
+_http_errors[501] = HttpNotImplemented
+
+class HttpBadGateway(HttpServerError):
+	"""502 Bad Gateway
+
+	The server, while acting as a gateway or proxy, received an invalid response from the upstream 
+	server it accessed in attempting to fulfill the request.
+	"""
+_http_errors[502] = HttpBadGateway
+
+class HttpServiceUnavailable(HttpServerError):
+	"""503 Service Unavailable
+
+	The server is currently unable to handle the request due to a temporary overloading or 
+	maintenance of the server. The implication is that this is a temporary condition which will be 
+	alleviated after some delay. If known, the length of the delay MAY be indicated in a 
+	Retry-After header. If no Retry-After is given, the client SHOULD handle the response as it 
+	would for a 500 response.
+
+		Note: The existence of the 503 status code does not imply that a server must use it when 
+		becoming overloaded. Some servers may wish to simply refuse the connection.
+	"""
+_http_errors[503] = HttpServiceUnavailable
+
+class HttpGatewayTimeout(HttpServerError):
+	"""504 Gateway Timeout
+
+	The server, while acting as a gateway or proxy, did not receive a timely response from the 
+	upstream server specified by the URI (e.g. HTTP, FTP, LDAP) or some other auxiliary server 
+	(e.g. DNS) it needed to access in attempting to complete the request.
+
+		Note: Note to implementors: some deployed proxies are known to return 400 or 500 when DNS 
+		lookups time out.
+	"""
+_http_errors[504] = HttpGatewayTimeout
+
+class HttpVersionNotSupported(HttpServerError):
+	"""505 HTTP Version Not Supported
+
+	The server does not support, or refuses to support, the HTTP protocol version that was used in 
+	the request message. The server is indicating that it is unable or unwilling to complete the 
+	request using the same major version as the client, as described in section 3.1, other than 
+	with this error message. The response SHOULD contain an entity describing why that version is 
+	not supported and what other protocols are supported by that server.
+	"""
+_http_errors[505] = HttpVersionNotSupported
 
 
 class Requests(object):
