@@ -74,7 +74,7 @@ class JsonObject(dict):
 		return self._requests.put(self.url).json()
 
 	def delete(self):
-		return self._requests.delete(self.url).json()
+		self._requests.delete(self.url)
 
 
 class Room(JsonObject):
