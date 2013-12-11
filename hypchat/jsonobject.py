@@ -128,12 +128,12 @@ class MemberCollection(JsonObject):
 		"""
 		Adds a member to a private room.
 		"""
-		raise NotImplementedError
+		self._requests.put(self.url+'/%s' % user['id'])
 
 	def remove(self, user):
 		"""
 		Removes a member from a private room.
 		"""
-		raise NotImplementedError
+		self._requests.delete(self.url+'/%s' % user['id'])
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/member')] = MemberCollection
