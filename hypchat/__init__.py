@@ -56,7 +56,7 @@ class HypChat(object):
 
 	def create_user(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
 		"""
-		Creates a new room.
+		Creates a new user.
 		"""
 		data={
 			'name': name,

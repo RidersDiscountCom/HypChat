@@ -152,3 +152,42 @@ class MemberCollection(JsonObject):
 		self._requests.delete(self.url+'/%s' % user['id'])
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/member')] = MemberCollection
+
+class UserCollection(JsonObject):
+	def create(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
+		"""
+		Creates a new room.
+		"""
+		data={
+			'name': name,
+			'email': email,
+			'title': title,
+			'mention_name': mention_name,
+			'is_group_admin': is_group_admin,
+			'timezone': timezone, # TODO: Support timezone objects
+			'password': password,
+		}
+		resp = self._requests.post(self.url, data=data)
+		return Linker._obj_from_text(resp.text, self._requests)
+
+_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user')] = UserCollection
+
+class RoomCollection(JsonObject):
+	def create(self, name, owner=Ellipsis, privacy='public', guest_access=True):
+		"""
+		Creates a new room.
+		"""
+		data={
+			'name': name,
+			'privacy': privacy,
+			'guest_access': guest_access,
+		}
+		if owner is not Ellipsis:
+			if owner is None:
+				data['owner_user_id'] = owner
+			else:
+				data['owner_user_id'] = owner['id']
+		resp = self._requests.post(self.url, data=data)
+		return Linker._obj_from_text(resp.text, self._requests)
+
+_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room')] = UserCollection
