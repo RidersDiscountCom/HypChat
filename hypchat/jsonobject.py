@@ -115,8 +115,6 @@ class Room(JsonObject):
 		})
 
 
-# TODO: Add/remove people from rooms
-
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
 
 class User(JsonObject):
@@ -124,3 +122,17 @@ class User(JsonObject):
 		raise NotImplementedError
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user/[^/]+')] = User
+
+class MemberCollection(JsonObject):
+	def add(self, user):
+		"""
+		Adds a member to a private room.
+		"""
+		raise NotImplementedError
+
+	def remove(self, user):
+		"""
+		Removes a member from a private room.
+		"""
+
+_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/member')] = MemberCollection
