@@ -114,6 +114,21 @@ class Room(JsonObject):
 			'reason': reason,
 		})
 
+	def create_webhook(self, url, event, pattern=None, name=None):
+		"""
+		Creates a new webhook.
+		"""
+		data={
+			'name': name,
+			'email': email,
+			'title': title,
+			'mention_name': mention_name,
+			'is_group_admin': is_group_admin,
+			'timezone': timezone, # TODO: Support timezone objects
+			'password': password,
+		}
+		resp = self._requests.post(self.url+'/webhook', data=data)
+		return Linker._obj_from_text(resp.text, self._requests)
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
 
