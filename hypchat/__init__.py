@@ -52,4 +52,4 @@ class HypChat(object):
 			else:
 				data['owner_user_id'] = owner['id']
 		resp = self._requests.post(self.rooms.url, data=data)
-		return Linker._obj_from_text(resp.text)
+		return Linker._obj_from_text(resp.text, self._requests)

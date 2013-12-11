@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division
 import json
 import re
-from . import requests
 
 _urls_to_objects = {}
 
@@ -16,7 +15,7 @@ class Linker(object):
 		self._requests = _requests or __import__('requests')
 
 	@staticmethod
-	def _obj_from_text(text):
+	def _obj_from_text(text, requests):
 		"""
 		Constructs objects (including our wrapper classes) from a JSON-formatted string
 		"""
@@ -29,7 +28,7 @@ class Linker(object):
 							klass = c
 							break
 				rv = klass(obj)
-				rv._requests = self._requests
+				rv._requests = requests
 				return rv
 			else:
 				return obj
@@ -46,7 +45,7 @@ class Linker(object):
 			else:
 				params = {'expand': ','.join(expand)}
 
-		rv = self._obj_from_text(self._requests.get(self.url, params=params).text)
+		rv = self._obj_from_text(self._requests.get(self.url, params=params).text, self._requests)
 		rv._requests = self._requests
 		if self.__parent is not None:
 			rv.parent = self.__parent
@@ -72,10 +71,10 @@ class JsonObject(dict):
 		return self['links']['self']
 
 	def save(self):
-		return requests.put(self.url).json()
+		return self._requests.put(self.url).json()
 
 	def delete(self):
-		return requests.delete(self.url).json()
+		return self._requests.delete(self.url).json()
 
 
 class Room(JsonObject):
