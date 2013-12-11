@@ -1,3 +1,5 @@
 *.pyo
 *.pyc
 *.sublime-workspace
+build/
+dist/
