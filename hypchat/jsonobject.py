@@ -90,7 +90,7 @@ class Room(JsonObject):
 		"""
 		Send a message to a room.
 		"""
-		requests.post(self.url+'/notification', data={
+		self._requests.post(self.url+'/notification', data={
 			'color': color,
 			'message': message,
 			'notify': notify,
@@ -101,7 +101,7 @@ class Room(JsonObject):
 		"""
 		Set a room's topic. Useful for displaying statistics, important links, server status, you name it!
 		"""
-		requests.put(self.url+'/topic', data={
+		self._requests.put(self.url+'/topic', data={
 			'topic': text,
 		})
 
@@ -110,7 +110,7 @@ class Room(JsonObject):
 		raise NotImplementedError
 
 	def invite(self, user, reason):
-		requests.post(self.url+'/invite/%s' % user['id'], data={
+		self._requests.post(self.url+'/invite/%s' % user['id'], data={
 			'reason': reason,
 		})
 
@@ -134,5 +134,6 @@ class MemberCollection(JsonObject):
 		"""
 		Removes a member from a private room.
 		"""
+		raise NotImplementedError
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/member')] = MemberCollection
