@@ -19,10 +19,7 @@ def req(method, url, params=None, data=None):
 		kwargs['data'] = json.dumps(data)
 	return c(url, auth=BearerAuth(AUTH_TOKEN), **kwargs)
 
-class HttpError(Exception):
-	pass
-
-class HttpClientError(HttpError):
+class HttpClientError(requests.exceptions.HTTPError):
 	"""The 4xx class of status code is intended for cases in which the client seems to have erred. 
 	Except when responding to a HEAD request, the server SHOULD include an entity containing an 
 	explanation of the error situation, and whether it is a temporary or permanent condition. These 
@@ -249,7 +246,7 @@ class HttpExpectationFailed(HttpClientError):
 _http_errors[417] = HttpExpectationFailed
 
 
-class HttpServerError(HttpError):
+class HttpServerError(requests.exceptions.HTTPError):
 	"""Server Error 5xx
 
 	Response status codes beginning with the digit "5" indicate cases in which the server is aware 
@@ -346,7 +343,13 @@ class Requests(object):
 		return kw
 	
 	def request(self, method, url, **kwargs):
-		return self.requests.request(method, url, **self._kw(kwargs))
+		rv = self.requests.request(method, url, **self._kw(kwargs))
+		# Raise one of our specific errors
+		if rv.status_code in _http_errors:
+			raise _http_errors[rv.status_code](rv)
+		# Try to raise for errors we didn't code for
+		rv.raise_for_status()
+		return rv
 	
 	def get(self, url, **kwargs):
 		kwargs.setdefault('allow_redirects', True)

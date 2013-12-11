@@ -12,15 +12,15 @@ class _requests(Requests):
 
 	def post(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
-		return self.requests.post(url, data, **self._kw(kwargs))
+		return super(_requests, self).post(url, data=data, **kwargs)
 		
 	def patch(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
-		return self.requests.patch(url, data, **self._kw(kwargs))
+		return super(_requests, self).patch(url, ddata=ata, **kwargs)
 		
 	def put(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
-		return self.requests.put(url, data, **self._kw(kwargs))
+		return super(_requests, self).put(url, data=data, **kwargs)
 
 from .jsonobject import Linker
 
