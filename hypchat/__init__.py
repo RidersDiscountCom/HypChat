@@ -53,3 +53,19 @@ class HypChat(object):
 				data['owner_user_id'] = owner['id']
 		resp = self._requests.post(self.rooms.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
+
+	def create_user(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
+		"""
+		Creates a new room.
+		"""
+		data={
+			'name': name,
+			'email': email,
+			'title': title,
+			'mention_name': mention_name,
+			'is_group_admin': is_group_admin,
+			'timezone': timezone, # TODO: Support timezone objects
+			'password': password,
+		}
+		resp = self._requests.post(self.users.url, data=data)
+		return Linker._obj_from_text(resp.text, self._requests)
