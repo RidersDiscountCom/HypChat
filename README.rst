@@ -38,6 +38,8 @@ And the request performed by calling it:
 
 	obj.self()
 
+.. _expand:
+
 If `Title Expansion`_ is desired, just past a list of things to be expanded as the ``expand`` keyword argument.
 
 .. _Title Expansion: https://www.hipchat.com/docs/apiv2/expansion
@@ -69,9 +71,9 @@ In addition, the HypChat object has methods for creating objects and directly re
 
 Navigation
 ----------
-Any time an object is referenced in a value (eg ``room['owner']``), a stub of that object is created, and the full object may be found with ``.self()``. Stubs contain the ID of the object, the name (if applicable), and any links that object has—including ``self``.
+Any time an object is referenced in a value (eg ``room['owner']``), a stub of that object is created, and the full object may be found with ``.self()``. Stubs contain the ID of the object, the name (if applicable), and any links that object has—including ``self``. This can be avoided by using the expand_ keyword.
 
-Collections—such as ``rooms``, ``users``, and ``emots`` above—all have an ``'items'`` key containing their list of things. In addition, the ``.contents()`` method will generate all of the items, handling pagination. As usual, 
+Collections—such as ``rooms``, ``users``, and ``emots`` above—all have an ``'items'`` key containing their list of things. In addition, the ``.contents()`` method will generate all of the items, handling pagination. As usual, object
 
 Console
 -------
@@ -81,4 +83,58 @@ If you call ``python -m hypchat``, a interactive prompt (using IPython_ if avail
 
 Type List
 =========
-TODO
+
+HypChat
+-------
+As the root object, this is mostly full of "singletons" and shortcut methods.
+
+Links
+~~~~~
+``capabilities``
+	The `capabilities descriptor`_ for HipChat
+
+``emoticons``
+	The `Emoticons Collection`_
+
+``rooms``
+	The `Rooms Collection`_
+
+``users``
+	The `Users Collection`_
+
+.. _capabilities descriptor: https://www.hipchat.com/docs/apiv2/method/get_capabilities
+
+Methods
+~~~~~~~
+``create_user()``
+	Creates a new User_ object and returns the response.
+
+``get_user()``
+	Gets a User_ directly without having to navigate
+
+``create_room()``
+	Creates a new Room_ object and returns the response.
+
+``get_room()``
+	Gets a Room_ directly without having to navigate
+
+``get_emoticon()``
+	Gets a Emoticon_ directly without having to navigate
+
+Rooms Collection
+----------------
+
+Room
+----
+
+Users Collection
+----------------
+
+User
+----
+
+Emoticons Collection
+--------------------
+
+Emoticon
+--------

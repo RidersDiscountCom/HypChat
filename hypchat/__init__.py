@@ -73,10 +73,10 @@ class HypChat(object):
 		return Linker._obj_from_text(resp.text, self._requests)
 
 	def get_room(self, id_or_name):
-		return Linker('https://api.hipchat.com/v2/room/%s' % id_or_name, _requests=self._requests)()
+		return self.fromurl('https://api.hipchat.com/v2/room/%s' % id_or_name)
 
 	def get_user(self, id_or_email):
-		return Linker('https://api.hipchat.com/v2/user/%s' % id_or_email, _requests=self._requests)()
+		return self.fromurl('https://api.hipchat.com/v2/user/%s' % id_or_email)
 
 	def get_emoticon(self, id_or_shortcut):
-		return Linker('https://api.hipchat.com/v2/emoticon/%s' % id_or_shortcut, _requests=self._requests)()
+		return self.fromurl('https://api.hipchat.com/v2/emoticon/%s' % id_or_shortcut)
