@@ -11,6 +11,7 @@ setup(name='hypchat',
       url='https://github.com/RidersDiscountCom/HypChat',
       packages=['hypchat'],
       requires=['requests', 'dateutil'],
+      provides=['hypchat'],
       classifiers=[ # https://pypi.python.org/pypi?%3Aaction=list_classifiers
             'Development Status :: 2 - Pre-Alpha',
             'Intended Audience :: Developers',
