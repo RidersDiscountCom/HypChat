@@ -166,13 +166,22 @@ Rooms Collection
 ----------------
 In addition to the things defined in `All Collections`_, the Rooms Collection has the below.
 
+Methods
+~~~~~~~
+``create()``
+	Creates a new room
+
+Room
+----
+Representing a single chat room.
+
 Links
 ~~~~~
 ``webhooks``
 	The `Webhooks Collection`_ for this room
 
 ``members``
-	(Optional) For private rooms only; the `Member Collection`_ for this room
+	(Optional) For private rooms only; the `Members Collection`_ for this room
 
 Methods
 ~~~~~~~
@@ -225,15 +234,24 @@ Values
 
 Webhooks Collection
 -------------------
-TODO
+In addition to the those in `All Collections`_, the Webhooks Collection has the below.
 
-Member Collection
------------------
-TODO
+Methods
+~~~~~~~
+``create()``
+	Create a new webhook
 
-Room
-----
-TODO
+Members Collection
+------------------
+In addition to the those in `All Collections`_, the Members Collection has the below.
+
+Methods
+~~~~~~~
+``add()``
+	Add a User_ to the list of members
+
+``remove()``
+	Remove a User_ from the list of members
 
 Users Collection
 ----------------
