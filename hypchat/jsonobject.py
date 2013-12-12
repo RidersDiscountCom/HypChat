@@ -138,7 +138,19 @@ class User(JsonObject):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user/[^/]+')] = User
 
-class MemberCollection(JsonObject):
+class Collection(JsonObject):
+	def contents(self):
+		page = self
+		while hasattr(page, 'next'):
+			for item in page['items']:
+				yield item
+			page = page.next()
+		# Last page handling
+		for item in page['items']:
+			yield item
+
+
+class MemberCollection(JsonObject, Collection):
 	def add(self, user):
 		"""
 		Adds a member to a private room.
@@ -153,7 +165,7 @@ class MemberCollection(JsonObject):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/member')] = MemberCollection
 
-class UserCollection(JsonObject):
+class UserCollection(JsonObject, Collection):
 	def create(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
 		"""
 		Creates a new room.
@@ -172,7 +184,7 @@ class UserCollection(JsonObject):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user')] = UserCollection
 
-class RoomCollection(JsonObject):
+class RoomCollection(JsonObject, Collection):
 	def create(self, name, owner=Ellipsis, privacy='public', guest_access=True):
 		"""
 		Creates a new room.
@@ -192,7 +204,7 @@ class RoomCollection(JsonObject):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room')] = RoomCollection
 
-class WebhookCollection(JsonObject):
+class WebhookCollection(JsonObject, Collection):
 	def create(self, url, event, pattern=None, name=None):
 		"""
 		Creates a new webhook.
