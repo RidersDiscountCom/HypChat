@@ -53,6 +53,14 @@ Values
 ``id``
 	The numeric ID of this object (except collections and webhooks)
 
+Methods
+~~~~~~~
+``delete()``
+	Attempts to delete the object (with HTTP ``DELETE``)
+
+``save()``
+	Attempts to save the object (with HTTP ``PUT``)
+
 All Collections
 ---------------
 All collections share this interface. Specific collection objects are "paged": no single object contains all items.
@@ -158,6 +166,33 @@ Methods
 ~~~~~~~
 ``create()``
 	Create a new Webhook_
+
+Webhook
+-------
+Unlike most REST Objects, Webhooks don't have an ID. Their stub is also much more extensive
+
+Fields
+~~~~~~
+``url``
+	(Stubbed) The URL to ``POST`` to
+
+``event``
+	(Stubbed) The event to call this hook on, one of ``'room_message'``, ``'room_notification'``, ``'room_exit'``, ``'room_enter'``, ``'room_topic_change'``
+
+``pattern``
+	(Stubbed) When ``event`` is ``'room_message'``, a regular expression to match against the message
+
+``name``
+	(Stubbed) A human label for this hook
+
+``room``
+	The Room_ this webhook is for
+
+``creator``
+	The User_ that created this webhook
+
+``created``
+	When this webhook was created
 
 Members Collection
 ------------------
