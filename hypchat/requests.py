@@ -318,24 +318,16 @@ class HttpVersionNotSupported(HttpServerError):
 _http_errors[505] = HttpVersionNotSupported
 
 
-class Requests(object):
+class Requests(requests.sessions.Session):
 	"""
 	Class that extends the requests module in two ways:
 	 * Supports default arguments, for things like repeated Auth
 	 * Raise errors when requests go poorly
 	"""
-	# Aliases to mimic the requests module
-	from requests import (
-		codes, session, Session, 
-		RequestException, Timeout, URLRequired,
-		TooManyRedirects, HTTPError, ConnectionError
-	)
-	
-	# Set this if you want to forward to somebody else
-	requests = __import__('requests')
 	
 	def __init__(self, **kwargs):
 		self._template = kwargs.copy()
+		super(Requests, self).__init__()
 	
 	def _kw(self, kwargs):
 		kw = self._template.copy()
@@ -343,34 +335,10 @@ class Requests(object):
 		return kw
 	
 	def request(self, method, url, **kwargs):
-		rv = self.requests.request(method, url, **self._kw(kwargs))
+		rv = super(Requests, self).request(method, url, **self._kw(kwargs))
 		# Raise one of our specific errors
 		if rv.status_code in _http_errors:
 			raise _http_errors[rv.status_code](rv)
 		# Try to raise for errors we didn't code for
 		rv.raise_for_status()
 		return rv
-	
-	def get(self, url, **kwargs):
-		kwargs.setdefault('allow_redirects', True)
-		return self.request('get', url, **self._kw(kwargs))
-		
-	def options(self, url, **kwargs):
-		kwargs.setdefault('allow_redirects', True)
-		return self.request('options', url, **self._kw(kwargs))
-
-	def head(self, url, **kwargs):
-		kwargs.setdefault('allow_redirects', True)
-		return self.request('head', url, **self._kw(kwargs))
-		
-	def post(self, url, data=None, **kwargs):
-		return self.request('post', url, data=data, **self._kw(kwargs))
-		
-	def put(self, url, data=None, **kwargs):
-		return self.request('put', url, data=data, **self._kw(kwargs))
-		
-	def patch(self, url, data=None, **kwargs):
-		return self.request('patch', url, data=data, **self._kw(kwargs))
-		
-	def delete(self, url, **kwargs):
-		return self.request('delete', url, **self._kw(kwargs))
