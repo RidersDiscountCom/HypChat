@@ -157,7 +157,7 @@ In addition to the those in `All Collections`_, the Webhooks Collection has the 
 Methods
 ~~~~~~~
 ``create()``
-	Create a new webhook
+	Create a new Webhook_
 
 Members Collection
 ------------------
@@ -182,7 +182,61 @@ Methods
 
 User
 ----
-TODO
+
+Methods
+~~~~~~~
+``message()``
+	Sends a private message to the given user
+
+Values
+~~~~~~
+``name``
+	Display name
+
+``xmpp_jid``
+	The XMPP (Jabber) ID of the user
+
+``is_deleted``
+	``True`` if the user has been deleted
+
+``last_active``
+	The last time the user was active
+
+``title``
+	The person's company title
+
+``presence``
+	A ``dict`` of the values:
+	
+	``status``
+		A status message, or ``None``
+
+	``idle``
+		The number of seconds the user has been idle, or ``None``
+
+	``show``
+		The status category, one of: ``'away'``, ``'chat'``, ``'dnd'``, ``'xa'``, or ``None``
+
+	``is_online``
+		``True`` if the user is online
+
+``created``
+	When the User was created
+
+``mention_name``
+	User's @mention name
+
+``is_group_admin``
+	``True`` if the user is an admin of the group/company/etc
+
+``timezone``
+	The user's timezone
+
+``email``
+	The user's email
+
+``photo_url``
+	The user's URL as a string.
 
 Emoticons Collection
 --------------------
