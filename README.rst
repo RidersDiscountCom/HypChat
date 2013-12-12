@@ -73,6 +73,12 @@ Any time an object is referenced in a value (eg ``room['owner']``), a stub of th
 
 Collections—such as ``rooms``, ``users``, and ``emots`` above—all have an ``'items'`` key containing their list of things. In addition, the ``.contents()`` method will generate all of the items, handling pagination. As usual, 
 
+Console
+-------
+If you call ``python -m hypchat``, a interactive prompt (using IPython_ if available) will appear. The environment will contain ``hipchat``, an instance of the ``HypChat`` object. The token is pull from ``~/.hypchat``, ``/etc/hypchat``, or the environment variable ``HIPCHAT_TOKEN``.
+
+.. _IPython: http://ipython.org/
+
 Type List
 =========
 TODO
