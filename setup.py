@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='hypchat',
-      version='0.1',
+      version='0.2',
       description="Package for HipChat's v2 API",
       long_description=open('README.rst').read(),
       author='James Bliss',
