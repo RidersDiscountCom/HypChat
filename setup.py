@@ -10,7 +10,7 @@ setup(name='hypchat',
       author_email='james@ridersdiscount.com',
       url='https://github.com/RidersDiscountCom/HypChat',
       packages=['hypchat'],
-      requires=['requests', 'python-dateutil'],
+      requires=['requests', 'dateutil'],
       classifiers=[ # https://pypi.python.org/pypi?%3Aaction=list_classifiers
             'Development Status :: 2 - Pre-Alpha',
             'Intended Audience :: Developers',
