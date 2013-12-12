@@ -14,7 +14,7 @@ setup(name='hypchat',
       classifiers=[ # https://pypi.python.org/pypi?%3Aaction=list_classifiers
             'Development Status :: 2 - Pre-Alpha',
             'Intended Audience :: Developers',
-            #FIXME: License
+            'License :: OSI Approved :: BSD License',
             'Operating System :: OS Independent',
             'Programming Language :: Python',
             'Programming Language :: Python :: 2 :: Only',
