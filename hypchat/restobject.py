@@ -225,3 +225,6 @@ class WebhookCollection(RestObject, Collection):
 		return Linker._obj_from_text(resp.text, self._requests)
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/webhook')] = WebhookCollection
+
+class EmoticonCollection(RestObject, Collection):
+	pass

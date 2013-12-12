@@ -275,8 +275,27 @@ Values
 
 Emoticons Collection
 --------------------
-TODO
+Defines nothing above `All Collections`_
 
 Emoticon
 --------
-TODO
+
+Fields
+~~~~~~
+``shortcut``
+	(Stubbed) The name used to invoke the emoticon, as in "(shortcut)"
+
+``url``
+	(Stubbed) The image file for this emoticon
+
+``creator``
+	The User_ that created this emoticon
+
+``width``
+	The width of the image, in pixels
+
+``height``
+	The height of the image, in pixels
+
+``audio_path``
+	(Optional) An audio file that should be played at the same time
