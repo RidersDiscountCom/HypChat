@@ -130,9 +130,21 @@ Links
 ``self``
 	A link to this object
 
+Values
+~~~~~~
+``id``
+	The numeric ID of this object (except collections and webhooks)
+
 All Collections
 ---------------
 All collections share this interface. Specific collection objects are "paged": no single object contains all items.
+
+Links
+~~~~~
+``next``
+	(Optional) The next page in this collection
+``prev``
+	(Optional) The previous page in this collection
 
 Values
 ~~~~~~
@@ -145,13 +157,6 @@ Values
 ``startIndex``
 	The index of the first item in this page, starting at 0
 
-Links
-~~~~~
-``next``
-	(Optional) The next page in this collection
-``prev``
-	(Optional) The previous page in this collection
-
 Methods
 ~~~~~~~
 ``contents()``
@@ -159,18 +164,94 @@ Methods
 
 Rooms Collection
 ----------------
+In addition to the things defined in `All Collections`_, the Rooms Collection has the below.
+
+Links
+~~~~~
+``webhooks``
+	The `Webhooks Collection`_ for this room
+
+``members``
+	(Optional) For private rooms only; the `Member Collection`_ for this room
+
+Methods
+~~~~~~~
+``message()``
+	Currently a pointer to ``notification()``
+
+``notification()``
+	Sends a message to a room
+
+``topic()``
+	Sets the topic
+
+.. ``history()``
+	Grabs a "collection" of the history
+
+``invite()``
+	Invite a user to this room
+
+Values
+~~~~~~
+``name``
+	Display name
+
+``created``
+	When the room was created
+
+``guest_access_url``
+	The URL to give for guest access, if enabled
+
+``is_archived``
+	``True`` if this room is archived, ``False`` otherwise
+
+``last_active``
+	When the room last had activity
+
+``owner``
+	A reference to the owning User_
+
+``participants``
+	A list of User_ stubs currently in the room
+
+``privacy``
+	One of ``'public'`` or ``'private'``
+
+``topic``
+	The current topic
+
+``xmpp_jid``
+	The XMPP (Jabber) ID
+
+Webhooks Collection
+-------------------
+TODO
+
+Member Collection
+-----------------
+TODO
 
 Room
 ----
+TODO
 
 Users Collection
 ----------------
+TODO
 
 User
 ----
+TODO
 
 Emoticons Collection
 --------------------
+TODO
 
 Emoticon
 --------
+TODO
+
+TODO List
+=========
+* Proper Datetime and Timezone (dateutils) support
+* API Links
