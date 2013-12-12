@@ -26,9 +26,9 @@ def mktimestamp(dt):
 	"""
 	Prepares a datetime for sending to HipChat.
 	"""
-	if rv.tzinfo is None:
-		rv = rv.replace(tzinfo=dateutil.tz.tzutc())
-	return rv.isoformat()
+	if dt.tzinfo is None:
+		dt = dt.replace(tzinfo=dateutil.tz.tzutc())
+	return dt.isoformat(), dt.tzinfo
 
 class Linker(object):
 	"""
@@ -139,8 +139,11 @@ class Room(RestObject):
 		})
 
 	def history(self, date='recent'):
-		# TODO: If given an aware datetime, pass its timezone along
-		raise NotImplementedError
+		tz = 'UTC'
+		if date != 'recent':
+			date, tz = mktimestamp(date)
+		resp = self._requests.get(self.url+'/history', params={'date':date, 'timezone': tz})
+		return Linker._obj_from_text(resp.text, self._requests)
 
 	def invite(self, user, reason):
 		self._requests.post(self.url+'/invite/%s' % user['id'], data={
@@ -163,7 +166,7 @@ class Room(RestObject):
 		resp = self._requests.post(self.url+'/webhook', data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+$')] = Room
 
 class User(RestObject):
 	def __init__(self, *p, **kw):
@@ -181,7 +184,7 @@ class User(RestObject):
 			'message': message,
 		})
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user/[^/]+')] = User
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/user/[^/]+$')] = User
 
 class Collection(object):
 	"""
@@ -211,7 +214,7 @@ class MemberCollection(RestObject, Collection):
 		"""
 		self._requests.delete(self.url+'/%s' % user['id'])
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/member')] = MemberCollection
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/member$')] = MemberCollection
 
 class UserCollection(RestObject, Collection):
 	def create(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
@@ -230,7 +233,7 @@ class UserCollection(RestObject, Collection):
 		resp = self._requests.post(self.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user')] = UserCollection
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/user$')] = UserCollection
 
 class RoomCollection(RestObject, Collection):
 	def create(self, name, owner=Ellipsis, privacy='public', guest_access=True):
@@ -250,7 +253,7 @@ class RoomCollection(RestObject, Collection):
 		resp = self._requests.post(self.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room')] = RoomCollection
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room$')] = RoomCollection
 
 class WebhookCollection(RestObject, Collection):
 	def create(self, url, event, pattern=None, name=None):
@@ -269,12 +272,12 @@ class WebhookCollection(RestObject, Collection):
 		resp = self._requests.post(self.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/webhook')] = WebhookCollection
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/webhook$')] = WebhookCollection
 
 class EmoticonCollection(RestObject, Collection):
 	pass
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/emoticon')] = EmoticonCollection
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/emotico$')] = EmoticonCollection
 
 class Webhook(RestObject):
 	def __init__(self, *p, **kw):
@@ -282,5 +285,10 @@ class Webhook(RestObject):
 		if 'created' in self:
 			self['created'] = timestamp(self['created'])
 
-_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/webhook/[^/]+')] = Webhook
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/webhook/[^/]+$')] = Webhook
 
+
+class HistoryCollection(RestObject, Collection):
+	pass
+
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/history$')] = HistoryCollection
