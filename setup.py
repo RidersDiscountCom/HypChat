@@ -5,6 +5,7 @@ from distutils.core import setup
 setup(name='hypchat',
       version='0.1',
       description="Package for HipChat's v2 API",
+      long_description=open('README.rst').read(),
       author='James Bliss',
       author_email='james@ridersdiscount.com',
       url='https://github.com/RidersDiscountCom/HypChat',
