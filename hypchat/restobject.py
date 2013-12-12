@@ -289,6 +289,10 @@ _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/webhook/[^/
 
 
 class HistoryCollection(RestObject, Collection):
-	pass
+	def __init__(self, *p, **kw):
+		super(HistoryCollection, self).__init__(*p, **kw)
+		for item in self['items']:
+			if 'date' in item:
+				item['date'] = timestamp(item['date'])
 
 _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/history$')] = HistoryCollection
