@@ -167,7 +167,7 @@ _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
 
 class User(RestObject):
 	def __init__(self, *p, **kw):
-		super(Room, self).__init__(*p, **kw)
+		super(User, self).__init__(*p, **kw)
 		if 'last_active' in self:
 			self['last_active'] = timestamp(self['last_active'])
 		if 'created' in self:
@@ -273,7 +273,7 @@ _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/emoticon')] = EmoticonC
 
 class Webhook(RestObject):
 	def __init__(self, *p, **kw):
-		super(Room, self).__init__(*p, **kw)
+		super(Webhook, self).__init__(*p, **kw)
 		if 'created' in self:
 			self['created'] = timestamp(self['created'])
 
