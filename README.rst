@@ -121,6 +121,42 @@ Methods
 ``get_emoticon()``
 	Gets a Emoticon_ directly without having to navigate
 
+JSON Objects
+------------
+All objects, collections, rooms, webhooks, etc have these things.
+
+Links
+~~~~~
+``self``
+	A link to this object
+
+All Collections
+---------------
+All collections share this interface. Specific collection objects are "paged": no single object contains all items.
+
+Values
+~~~~~~
+``items``
+	A list of the things for this 'page' of the collection
+
+``maxResults``
+	The maximum number of items that could be in this page
+
+``startIndex``
+	The index of the first item in this page, starting at 0
+
+Links
+~~~~~
+``next``
+	(Optional) The next page in this collection
+``prev``
+	(Optional) The previous page in this collection
+
+Methods
+~~~~~~~
+``contents()``
+	A generator that produces all items, navigating pagination in the process
+
 Rooms Collection
 ----------------
 
