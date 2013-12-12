@@ -169,7 +169,7 @@ In addition to the things defined in `All Collections`_, the Rooms Collection ha
 Methods
 ~~~~~~~
 ``create()``
-	Creates a new room
+	Creates a new Room_
 
 Room
 ----
@@ -255,7 +255,12 @@ Methods
 
 Users Collection
 ----------------
-TODO
+In addition to the things defined in `All Collections`_, the Users Collection has the below.
+
+Methods
+~~~~~~~
+``create()``
+	Creates a new User_
 
 User
 ----
