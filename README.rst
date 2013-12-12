@@ -1,7 +1,9 @@
 =======
 HypChat
 =======
-A Python package for HipChat's v2 JSON REST API. It's based on v2's navigability and self-declaration.
+A Python package for HipChat's `v2 JSON REST API`_. It's based on v2's navigability and self-declaration.
+
+.. _v2 JSON REST API: https://www.hipchat.com/docs/apiv2
 
 Concepts
 ========
@@ -27,15 +29,18 @@ Links
 As part of the v2 API, all objects have a ``links`` property with references to other objects. This is used to create ``Linker`` objects as attributes.
 
 For example, all objects have a link called ``self``. This may be referenced as:
-
 ::
 
-    obj.self
+	obj.self
 
 And the request performed by calling it:
 ::
 
-    obj.self()
+	obj.self()
+
+If `Title Expansion`_ is desired, just past a list of things to be expanded as the ``expand`` keyword argument.
+
+.. _Title Expansion: https://www.hipchat.com/docs/apiv2/expansion
 
 Other Actions
 ~~~~~~~~~~~~~
@@ -51,7 +56,22 @@ First, create a HypChat object with the token
 
 	hc = HypChat("mytoken")
 
-There are several root links
+There are several root links:
+
+::
+
+	rooms = hc.rooms()
+	users = hc.users()
+	emots = hc.emoticons()
+	caps = hc.capabilities()
+
+In addition, the HypChat object has methods for creating objects and directly referencing the basic types.
+
+Navigation
+----------
+Any time an object is referenced in a value (eg ``room['owner']``), a stub of that object is created, and the full object may be found with ``.self()``. Stubs contain the ID of the object, the name (if applicable), and any links that object has—including ``self``.
+
+Collections—such as ``rooms``, ``users``, and ``emots`` above—all have an ``'items'`` key containing their list of things. In addition, the ``.contents()`` method will generate all of the items, handling pagination. As usual, 
 
 Type List
 =========
