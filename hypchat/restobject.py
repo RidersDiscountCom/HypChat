@@ -21,7 +21,7 @@ class Linker(object):
 		"""
 		def _object_hook(obj):
 			if 'links' in obj:
-				klass = JsonObject
+				klass = RestObject
 				if 'self' in obj['links']:
 					for p, c in _urls_to_objects.iteritems():
 						if p.match(obj['links']['self']):
@@ -54,7 +54,7 @@ class Linker(object):
 	def __repr__(self):
 		return "<%s url=%r>" % (type(self).__name__, self.url)
 
-class JsonObject(dict):
+class RestObject(dict):
 	"""
 	Nice wrapper around the JSON objects and their links.
 	"""
@@ -77,7 +77,7 @@ class JsonObject(dict):
 		self._requests.delete(self.url)
 
 
-class Room(JsonObject):
+class Room(RestObject):
 	def message(self, *p, **kw):
 		"""
 		Redirects to the /notification URL.
@@ -132,7 +132,7 @@ class Room(JsonObject):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
 
-class User(JsonObject):
+class User(RestObject):
 	def message(self, message):
 		raise NotImplementedError
 
@@ -153,7 +153,7 @@ class Collection(object):
 			yield item
 
 
-class MemberCollection(JsonObject, Collection):
+class MemberCollection(RestObject, Collection):
 	def add(self, user):
 		"""
 		Adds a member to a private room.
@@ -168,7 +168,7 @@ class MemberCollection(JsonObject, Collection):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/member')] = MemberCollection
 
-class UserCollection(JsonObject, Collection):
+class UserCollection(RestObject, Collection):
 	def create(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
 		"""
 		Creates a new room.
@@ -187,7 +187,7 @@ class UserCollection(JsonObject, Collection):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user')] = UserCollection
 
-class RoomCollection(JsonObject, Collection):
+class RoomCollection(RestObject, Collection):
 	def create(self, name, owner=Ellipsis, privacy='public', guest_access=True):
 		"""
 		Creates a new room.
@@ -207,7 +207,7 @@ class RoomCollection(JsonObject, Collection):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room')] = RoomCollection
 
-class WebhookCollection(JsonObject, Collection):
+class WebhookCollection(RestObject, Collection):
 	def create(self, url, event, pattern=None, name=None):
 		"""
 		Creates a new webhook.

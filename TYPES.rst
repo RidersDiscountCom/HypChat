@@ -39,7 +39,7 @@ Methods
 ``get_emoticon()``
 	Gets a Emoticon_ directly without having to navigate
 
-JSON Objects
+REST Objects
 ------------
 All objects, collections, rooms, webhooks, etc have these things.
 

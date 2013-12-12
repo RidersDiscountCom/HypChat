@@ -8,7 +8,7 @@ A Python package for HipChat's `v2 JSON REST API`_. It's based on v2's navigabil
 Concepts
 ========
 
-There are two basic types in HypChat: ``Linker`` and ``JsonObject``. They are not meant to be instantiated directly but instead created as references from other objects.
+There are two basic types in HypChat: ``Linker`` and ``RestObject``. They are not meant to be instantiated directly but instead created as references from other objects.
 
 Linker
 ------
@@ -18,9 +18,9 @@ A simple callable that represents an unfollowed reference.
 	The URL this object points to
 
 ``l()``
-	Calling a ``Linker`` will perform the request and return a ``JsonObject``
+	Calling a ``Linker`` will perform the request and return a ``RestObject``
 
-JsonObject
+RestObject
 ----------
 A subclass of ``dict``, contains additional functionality for links and actions.
 

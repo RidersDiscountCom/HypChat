@@ -1,7 +1,8 @@
 from __future__ import absolute_import, division
-from .requests import Requests, BearerAuth
-
 import json
+from .requests import Requests, BearerAuth
+from .restobject import Linker
+
 
 class _requests(Requests):
 	@staticmethod
@@ -24,7 +25,6 @@ class _requests(Requests):
 		data = self._data(data, kwargs)
 		return super(_requests, self).put(url, data=data, **kwargs)
 
-from .jsonobject import Linker
 
 __all__ = ('HypChat',)
 
