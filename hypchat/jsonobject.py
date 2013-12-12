@@ -138,7 +138,10 @@ class User(JsonObject):
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user/[^/]+')] = User
 
-class Collection(JsonObject):
+class Collection(object):
+	"""
+	Mixin for collections
+	"""
 	def contents(self):
 		page = self
 		while hasattr(page, 'next'):
