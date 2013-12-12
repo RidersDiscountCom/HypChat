@@ -84,7 +84,9 @@ If you call ``python -m hypchat``, a interactive prompt (using IPython_ if avail
 Type List
 =========
 
+See `TYPES.rst`_
 
+.. _TYPES.rst: https://github.com/RidersDiscountCom/HypChat/blob/master/TYPES.rst
 
 TODO List
 =========
