@@ -174,7 +174,12 @@ class User(RestObject):
 			self['created'] = timestamp(self['created'])
 
 	def message(self, message):
-		raise NotImplementedError
+		"""
+		Sends a user a private message.
+		"""
+		self._requests.post(self.url+'/message', data={
+			'message': message,
+		})
 
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/user/[^/]+')] = User
 
