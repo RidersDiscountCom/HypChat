@@ -1,8 +1,34 @@
 from __future__ import absolute_import, division
 import json
 import re
+import datetime
+import dateutil.parser
+import dateutil.tz
 
 _urls_to_objects = {}
+
+def timestamp(dt):
+	"""
+	Parses a HipChat datetime value.
+
+	HipChat uses ISO 8601, optionally with the timezone attached
+	"""
+	#'2013-12-05T22:42:18+00:00' <== History
+	#'2013-11-27T15:33:24' <== Rooms, Users
+	if dt is None:
+		return
+	rv = dateutil.parser.parse(dt)
+	if rv.tzinfo is None:
+		rv = rv.replace(tzinfo=dateutil.tz.tzutc())
+	return rv
+
+def mktimestamp(dt):
+	"""
+	Prepares a datetime for sending to HipChat.
+	"""
+	if rv.tzinfo is None:
+		rv = rv.replace(tzinfo=dateutil.tz.tzutc())
+	return rv.isoformat()
 
 class Linker(object):
 	"""
@@ -78,6 +104,13 @@ class RestObject(dict):
 
 
 class Room(RestObject):
+	def __init__(self, *p, **kw):
+		super(Room, self).__init__(*p, **kw)
+		if 'last_active' in self:
+			self['last_active'] = timestamp(self['last_active'])
+		if 'created' in self:
+			self['created'] = timestamp(self['created'])
+
 	def message(self, *p, **kw):
 		"""
 		Redirects to the /notification URL.
@@ -133,6 +166,13 @@ class Room(RestObject):
 _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+')] = Room
 
 class User(RestObject):
+	def __init__(self, *p, **kw):
+		super(Room, self).__init__(*p, **kw)
+		if 'last_active' in self:
+			self['last_active'] = timestamp(self['last_active'])
+		if 'created' in self:
+			self['created'] = timestamp(self['created'])
+
 	def message(self, message):
 		raise NotImplementedError
 
@@ -228,3 +268,14 @@ _urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/webhook')] =
 
 class EmoticonCollection(RestObject, Collection):
 	pass
+
+_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/emoticon')] = EmoticonCollection
+
+class Webhook(RestObject):
+	def __init__(self, *p, **kw):
+		super(Room, self).__init__(*p, **kw)
+		if 'created' in self:
+			self['created'] = timestamp(self['created'])
+
+_urls_to_objects[re.compile(r'https://api.hipchat.com/v2/room/[^/]+/webhook/[^/]+')] = Webhook
+
