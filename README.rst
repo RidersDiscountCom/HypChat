@@ -49,6 +49,14 @@ Other Actions
 
 Many of the v2 types define additional types, eg Rooms have methods for messaging, setting the topic, getting the history, and inviting users to the room. These are implemented as methods of subclasses. The complete listing is in the `Type List`_.
 
+Timezone Handling
+-----------------
+HypChat uses aware ``datetime`` objects throughout by the ``dateutil`` module. However, the HipChat API universally uses UTC.
+
+For methods that take a ``datetime``, if a naive object is given, it will be assumed to be in UTC. If this is not what you mean, ``dateutil.tz`` has a wonderful selection of timezones_ available.
+
+.. _timezones: http://labix.org/python-dateutil#head-587bd3efc48f897f55c179abc520a34330ee0a62
+
 Usage
 =====
 
