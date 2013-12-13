@@ -7,7 +7,7 @@ A Python package for HipChat's `v2 JSON REST API`_. It's based on v2's navigabil
 
 Installation
 ============
-HypChat can either be installed from PyPI:
+HypChat can either be installed from PyPI_:
 ::
 
 	pip install hypchat
@@ -16,6 +16,8 @@ Or from source:
 ::
 
 	python setup.py install
+
+.. _PyPI: https://pypi.python.org/pypi/hypchat/
 
 Concepts
 ========
