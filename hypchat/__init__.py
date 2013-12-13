@@ -1,10 +1,21 @@
 from __future__ import absolute_import, division
 import json
-from .requests import Requests, BearerAuth
+import time
+import warnings
+from .requests import Requests, BearerAuth, HttpForbidden
 from .restobject import Linker
 
+class RateLimitWarning(Warning):
+	"""
+	This token has been rate limited. Waiting for the next reset.
+	"""
 
 class _requests(Requests):
+	def __init__(self, *p, **kw):
+		super(_requests, self).__init__(*p, **kw)
+		self.rl_remaining = 99999
+		self.rl_reset = 0
+
 	@staticmethod
 	def _data(data, kwargs):
 		if isinstance(data, basestring):
@@ -13,9 +24,30 @@ class _requests(Requests):
 			kwargs.setdefault('headers',{})['Content-Type'] = 'application/json'
 			return json.dumps(data)
 
+	def _rl_sleep(self, until):
+		t = until - time.time()
+		if t > 0:
+			warnings.warn("HipChat has been rate limited; Waiting for the next reset.", RateLimitWarning)
+			time.sleep(t)
+
 	def request(self, method, url, **kwargs):
-		rv = super(_requests, self).request(method, url, **kwargs)
-		# TODO: If we've reached our rate limit: raise warning, sleep, and try again
+		while True:
+			try:
+				if self.rl_remaining <= 0:
+					# We're out of requests, chill
+					self._rl_sleep(self.rl_reset)
+				resp = super(_requests, self).request(method, url, **kwargs)
+			except HttpForbidden, e:
+				#FIXME: Is there a better way to do this?
+				if e.response.json()['error']['message'] == u'You have exceeded the rate limit. See https://www.hipchat.com/docs/api/rate_limiting':
+					self.rl_remaining = int(e.response.headers['x-ratelimit-remaining'])
+					self.rl_reset = float(e.response.headers['x-ratelimit-reset'])
+					continue # Try the request again
+				else:
+					raise
+			else:
+				self.rl_remaining = int(resp.headers['x-ratelimit-remaining'])
+				self.rl_reset = float(resp.headers['x-ratelimit-reset'])
 
 	def post(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)

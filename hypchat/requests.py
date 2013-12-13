@@ -338,7 +338,7 @@ class Requests(requests.sessions.Session):
 		rv = super(Requests, self).request(method, url, **self._kw(kwargs))
 		# Raise one of our specific errors
 		if rv.status_code in _http_errors:
-			raise _http_errors[rv.status_code](rv)
+			raise _http_errors[rv.status_code](rv.text, response=rv)
 		# Try to raise for errors we didn't code for
 		rv.raise_for_status()
 		return rv
