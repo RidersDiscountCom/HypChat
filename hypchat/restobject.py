@@ -28,7 +28,7 @@ def mktimestamp(dt):
 	"""
 	if dt.tzinfo is None:
 		dt = dt.replace(tzinfo=dateutil.tz.tzutc())
-	return dt.isoformat(), dt.tzinfo
+	return dt.isoformat(), dt.tzinfo.tzname(dt)
 
 class Linker(object):
 	"""
