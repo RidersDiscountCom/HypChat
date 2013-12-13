@@ -98,6 +98,5 @@ See `TYPES.rst`_
 
 TODO List
 =========
-* Proper Datetime and Timezone (dateutils) support
-* History
 * API Links
+* Rate Limit handling
