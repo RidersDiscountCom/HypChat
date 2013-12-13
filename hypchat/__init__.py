@@ -13,6 +13,10 @@ class _requests(Requests):
 			kwargs.setdefault('headers',{})['Content-Type'] = 'application/json'
 			return json.dumps(data)
 
+	def request(self, method, url, **kwargs):
+		rv = super(_requests, self).request(method, url, **kwargs)
+		# TODO: If we've reached our rate limit: raise warning, sleep, and try again
+
 	def post(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
 		return super(_requests, self).post(url, data=data, **kwargs)
