@@ -5,6 +5,18 @@ A Python package for HipChat's `v2 JSON REST API`_. It's based on v2's navigabil
 
 .. _v2 JSON REST API: https://www.hipchat.com/docs/apiv2
 
+Installation
+============
+HypChat can either be installed from PyPI:
+::
+
+	pip install hypchat
+
+Or from source:
+::
+
+	python setup.py install
+
 Concepts
 ========
 
