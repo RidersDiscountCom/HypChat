@@ -2,10 +2,21 @@
 
 from distutils.core import setup
 
+def read_file(name):
+    """
+    Read file content
+    """
+    f = open(name)
+    try:
+        return f.read()
+    except IOError:
+        print("could not read %r" % name)
+        f.close()
+
 setup(name='hypchat',
       version='0.4',
       description="Package for HipChat's v2 API",
-      long_description=open('README.rst').read(),
+      long_description=read_file('README.rst'),
       author='James Bliss',
       author_email='james@ridersdiscount.com',
       url='https://github.com/RidersDiscountCom/HypChat',
@@ -24,3 +35,4 @@ setup(name='hypchat',
             'Topic :: Software Development :: Libraries :: Python Modules',
       ]
      )
+
