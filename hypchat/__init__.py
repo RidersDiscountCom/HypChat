@@ -27,7 +27,7 @@ class _requests(Requests):
 	def _rl_sleep(self, until):
 		t = until - time.time()
 		if t > 0:
-			warnings.warn("HipChat has been rate limited; Waiting for the next reset.", RateLimitWarning)
+			warnings.warn("HipChat has been rate limited; Waiting %0.1fs for the next reset." % t, RateLimitWarning)
 			time.sleep(t)
 
 	def request(self, method, url, **kwargs):

@@ -138,11 +138,16 @@ class Room(RestObject):
 			'topic': text,
 		})
 
-	def history(self, date='recent'):
+	def history(self, date='recent', maxResults=200):
 		tz = 'UTC'
 		if date != 'recent':
 			date, tz = mktimestamp(date)
-		resp = self._requests.get(self.url+'/history', params={'date':date, 'timezone': tz})
+		params = {
+			'date':date, 
+			'timezone': tz, 
+			'max-results': maxResults,
+		}
+		resp = self._requests.get(self.url+'/history', params=params)
 		return Linker._obj_from_text(resp.text, self._requests)
 
 	def invite(self, user, reason):
