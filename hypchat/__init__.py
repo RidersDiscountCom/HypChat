@@ -48,6 +48,7 @@ class _requests(Requests):
 			else:
 				self.rl_remaining = int(resp.headers['x-ratelimit-remaining'])
 				self.rl_reset = float(resp.headers['x-ratelimit-reset'])
+				return resp
 
 	def post(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
