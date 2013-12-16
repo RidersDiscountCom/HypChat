@@ -2,6 +2,8 @@ from __future__ import absolute_import, division
 import json
 import time
 import warnings
+import sys
+import os
 from .requests import Requests, BearerAuth, HttpForbidden
 from .restobject import Linker
 
@@ -15,6 +17,7 @@ class _requests(Requests):
 		super(_requests, self).__init__(*p, **kw)
 		self.rl_remaining = 99999
 		self.rl_reset = 0
+		self.dump_reqs = '__HYPCHAT_DEBUG_REQUESTS__' in os.environ
 
 	@staticmethod
 	def _data(data, kwargs):
@@ -31,6 +34,8 @@ class _requests(Requests):
 			time.sleep(t)
 
 	def request(self, method, url, **kwargs):
+		if self.dump_reqs:
+			print >> sys.stderr, "REQUEST", method, url
 		while True:
 			try:
 				if self.rl_remaining <= 0:
