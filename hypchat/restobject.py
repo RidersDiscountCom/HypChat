@@ -17,7 +17,12 @@ def timestamp(dt):
 	#'2013-11-27T15:33:24' <== Rooms, Users
 	if dt is None:
 		return
-	rv = dateutil.parser.parse(dt)
+	if isinstance(dt, int):
+		rv = datetime.datetime.fromtimestamp(dt, dateutil.tz.tzutc())
+	elif dt.isdigit():
+		rv = datetime.datetime.fromtimestamp(int(dt), dateutil.tz.tzutc())
+	else:
+		rv = dateutil.parser.parse(dt)
 	if rv.tzinfo is None:
 		rv = rv.replace(tzinfo=dateutil.tz.tzutc())
 	return rv
