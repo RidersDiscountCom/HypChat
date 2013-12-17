@@ -11,7 +11,7 @@ def timestamp(dt):
 	"""
 	Parses a HipChat datetime value.
 
-	HipChat uses ISO 8601, optionally with the timezone attached
+	HipChat uses ISO 8601, optionally with the timezone attached. Except for when they use a timestamp.
 	"""
 	#'2013-12-05T22:42:18+00:00' <== History
 	#'2013-11-27T15:33:24' <== Rooms, Users

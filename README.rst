@@ -91,6 +91,21 @@ There are several root links:
 
 In addition, the HypChat object has methods for creating objects and directly referencing the basic types.
 
+For example, you might do:
+
+::
+	for room in (r for r in hipchat.rooms(expand='items') if r['last_active'] < datetime.datetime(2013, 12, 1)):
+		room.owner.message("Your room is dead; maybe archive it")
+
+Since ``room.owner`` is a User_ stub, not just a generic object. (The Room_ objects are not stubs, since the ``expand`` keyword is used).
+
+Downloading history is as easy as:
+
+::
+	list(HypChat(token).get_room(id).history(datetime.datetime.utcnow()).contents())
+
+Note that this may eat up many requests for large rooms.
+
 Navigation
 ----------
 Any time an object is referenced in a value (eg ``room['owner']``), a stub of that object is created, and the full object may be found with ``.self()``. Stubs contain the ID of the object, the name (if applicable), and any links that object has—including ``self``. This can be avoided by using the expand_ keyword.
