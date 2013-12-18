@@ -287,7 +287,7 @@ _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/webhook$')]
 class EmoticonCollection(RestObject, Collection):
 	pass
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/emotico$')] = EmoticonCollection
+_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/emoticon$')] = EmoticonCollection
 
 class Webhook(RestObject):
 	def __init__(self, *p, **kw):
