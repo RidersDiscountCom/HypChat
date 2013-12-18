@@ -94,6 +94,7 @@ In addition, the HypChat object has methods for creating objects and directly re
 For example, you might do:
 
 ::
+
 	for room in (r for r in hipchat.rooms(expand='items') if r['last_active'] < datetime.datetime(2013, 12, 1)):
 		room.owner.message("Your room is dead; maybe archive it")
 
@@ -102,6 +103,7 @@ Since ``room.owner`` is a User stub, not just a generic object. (The Room object
 Downloading history is as easy as:
 
 ::
+
 	list(HypChat(token).get_room(id).history(datetime.datetime.utcnow()).contents())
 
 Note that this may eat up many requests for large rooms.
