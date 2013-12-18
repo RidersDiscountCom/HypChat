@@ -97,7 +97,7 @@ For example, you might do:
 	for room in (r for r in hipchat.rooms(expand='items') if r['last_active'] < datetime.datetime(2013, 12, 1)):
 		room.owner.message("Your room is dead; maybe archive it")
 
-Since ``room.owner`` is a User_ stub, not just a generic object. (The Room_ objects are not stubs, since the ``expand`` keyword is used).
+Since ``room.owner`` is a User stub, not just a generic object. (The Room objects are not stubs, since the ``expand`` keyword is used).
 
 Downloading history is as easy as:
 
@@ -128,4 +128,3 @@ See `TYPES.rst`_
 TODO List
 =========
 * API Links
-* Rate Limit handling
