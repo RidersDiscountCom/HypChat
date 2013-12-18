@@ -14,14 +14,14 @@ def read_file(name):
         f.close()
 
 setup(name='hypchat',
-      version='0.7',
+      version='0.8',
       description="Package for HipChat's v2 API",
       long_description=read_file('README.rst'),
       author='James Bliss',
       author_email='james@ridersdiscount.com',
       url='https://github.com/RidersDiscountCom/HypChat',
       packages=['hypchat'],
-      install_requires=['requests', 'dateutil'],
+      install_requires=['requests', 'python-dateutil'],
       provides=['hypchat'],
       classifiers=[ # https://pypi.python.org/pypi?%3Aaction=list_classifiers
             'Development Status :: 3 - Alpha',
