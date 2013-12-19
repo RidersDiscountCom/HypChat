@@ -229,7 +229,7 @@ _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/member$')] 
 class UserCollection(RestObject, Collection):
 	def create(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
 		"""
-		Creates a new room.
+		Creates a new user.
 		"""
 		data={
 			'name': name,
