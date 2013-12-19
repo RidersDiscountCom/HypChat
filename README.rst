@@ -12,12 +12,13 @@ HypChat can either be installed from PyPI_:
 
 	pip install hypchat
 
-Or from source:
+Or from source_:
 ::
 
 	python setup.py install
 
 .. _PyPI: https://pypi.python.org/pypi/hypchat/
+.. _source: https://github.com/RidersDiscountCom/HypChat
 
 Concepts
 ========
