@@ -78,8 +78,8 @@ class HypChat(object):
 		self.rooms = Linker('https://api.hipchat.com/v2/room', _requests=self._requests)
 		self.users = Linker('https://api.hipchat.com/v2/user', _requests=self._requests)
 
-	def fromurl(self, url):
-		return Linker(url, _requests=self._requests)()
+	def fromurl(self, url, **kwargs):
+		return Linker(url, _requests=self._requests)(**kwargs)
 
 	def create_room(self, name, owner=Ellipsis, privacy='public', guest_access=True):
 		"""
@@ -114,11 +114,11 @@ class HypChat(object):
 		resp = self._requests.post(self.users.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-	def get_room(self, id_or_name):
-		return self.fromurl('https://api.hipchat.com/v2/room/%s' % id_or_name)
+	def get_room(self, id_or_name, **kwargs):
+		return self.fromurl('https://api.hipchat.com/v2/room/%s' % id_or_name, **kwargs)
 
-	def get_user(self, id_or_email):
-		return self.fromurl('https://api.hipchat.com/v2/user/%s' % id_or_email)
+	def get_user(self, id_or_email, **kwargs):
+		return self.fromurl('https://api.hipchat.com/v2/user/%s' % id_or_email, **kwargs)
 
-	def get_emoticon(self, id_or_shortcut):
-		return self.fromurl('https://api.hipchat.com/v2/emoticon/%s' % id_or_shortcut)
+	def get_emoticon(self, id_or_shortcut, **kwargs):
+		return self.fromurl('https://api.hipchat.com/v2/emoticon/%s' % id_or_shortcut, **kwargs)
