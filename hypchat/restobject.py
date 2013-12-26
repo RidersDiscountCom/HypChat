@@ -200,12 +200,15 @@ class Collection(object):
 	"""
 	Mixin for collections
 	"""
-	def contents(self):
+	def contents(self **kwargs):
 		page = self
+		ops = {}
+		if kwargs.get('expand'):
+			ops['expand'] = 'items'
 		while hasattr(page, 'next'):
 			for item in page['items']:
 				yield item
-			page = page.next()
+			page = page.next(**ops)
 		# Last page handling
 		for item in page['items']:
 			yield item
