@@ -102,7 +102,7 @@ class RestObject(dict):
 		return self['links']['self']
 
 	def save(self):
-		return self._requests.put(self.url).json()
+		return self._requests.put(self.url, data=self).json()
 
 	def delete(self):
 		self._requests.delete(self.url)
@@ -193,6 +193,20 @@ class User(RestObject):
 		self._requests.post(self.url+'/message', data={
 			'message': message,
 		})
+
+	def save(self):
+		data = {}
+		for key, value in self.iteritems():
+			if key == 'presence' and isinstance(value, dict):
+				p = value.copy()
+				print p
+				p.pop('idle', None)
+				p.pop('is_online', None)
+				if len(p) != 0:
+					data[key] = p
+			else:
+				data[key] = value
+		return self._requests.put(self.url, data=data).json()
 
 _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/user/[^/]+$')] = User
 

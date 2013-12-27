@@ -4,6 +4,7 @@ import time
 import warnings
 import sys
 import os
+import datetime
 from .requests import Requests, BearerAuth, HttpForbidden
 from .restobject import Linker
 
@@ -11,6 +12,14 @@ class RateLimitWarning(Warning):
 	"""
 	This token has been rate limited. Waiting for the next reset.
 	"""
+
+def jsonify(obj):
+	if isinstance(obj, datetime.datetime):
+		return obj.isoformat()
+	elif isinstance(obj, set):
+		return list(obj)
+	else:
+		raise TypeError("Can't JSONify objects of type %s" % type(obj).__name__)
 
 class _requests(Requests):
 	def __init__(self, *p, **kw):
@@ -25,7 +34,9 @@ class _requests(Requests):
 			return data
 		elif data is not None:
 			kwargs.setdefault('headers',{})['Content-Type'] = 'application/json'
-			return json.dumps(data)
+			rv = json.dumps(data, default=jsonify)
+			print rv
+			return rv
 
 	def _rl_sleep(self, until):
 		t = until - time.time()
