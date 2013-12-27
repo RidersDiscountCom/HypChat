@@ -200,7 +200,7 @@ class Collection(object):
 	"""
 	Mixin for collections
 	"""
-	def contents(self **kwargs):
+	def contents(self, **kwargs):
 		page = self
 		ops = {}
 		if kwargs.get('expand'):
