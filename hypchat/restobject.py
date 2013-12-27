@@ -198,10 +198,10 @@ class User(RestObject):
 		data = {}
 		for key, value in self.iteritems():
 			if key == 'presence' and isinstance(value, dict):
-				p = value.copy()
-				print p
-				p.pop('idle', None)
-				p.pop('is_online', None)
+				p = {}
+				for k,v in value.iteritems():
+					if k in ('status', 'show'):
+						p[k] = v
 				if len(p) != 0:
 					data[key] = p
 			else:
