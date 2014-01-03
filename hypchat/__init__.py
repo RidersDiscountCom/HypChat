@@ -87,7 +87,22 @@ class HypChat(object):
 		self.capabilities = Linker('https://api.hipchat.com/v2/capabilities', _requests=self._requests)
 		self.emoticons = Linker('https://api.hipchat.com/v2/emoticon', _requests=self._requests)
 		self.rooms = Linker('https://api.hipchat.com/v2/room', _requests=self._requests)
-		self.users = Linker('https://api.hipchat.com/v2/user', _requests=self._requests)
+
+	def users(self, **ops):
+		"""users([guests=bool], [deleted=bool]) -> UserCollection
+
+		Returns a collection of users, with the following keyword options:
+		* guests: If True, return active guests
+		* deleted: If True, return deleted users
+		"""
+		params = {}
+		if ops.get('guests', False):
+			params['include-guests'] = 'true'
+		if ops.get('deleted', False):
+			params['include-deleted'] = 'true'
+		resp = self._requests.get('https://api.hipchat.com/v2/user', params=params)
+		return Linker._obj_from_text(resp.text, self._requests)
+
 
 	def fromurl(self, url, **kwargs):
 		return Linker(url, _requests=self._requests)(**kwargs)
