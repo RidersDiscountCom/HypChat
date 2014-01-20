@@ -116,6 +116,15 @@ class Room(RestObject):
 		if 'created' in self:
 			self['created'] = timestamp(self['created'])
 
+	def save(self):
+		data = {}
+		for key in ('name', 'privacy', 'is_archived', 'is_guest_accessible', 'topic'):
+			data[key] = self[key]
+		data['owner'] = {
+			'id': self['owner']['id']
+		}
+		self._requests.put(self.url, data=data)
+
 	def message(self, *p, **kw):
 		"""
 		Redirects to the /notification URL.
@@ -165,13 +174,10 @@ class Room(RestObject):
 		Creates a new webhook.
 		"""
 		data={
+			'url': url,
+			'event': event,
+			'pattern': pattern,
 			'name': name,
-			'email': email,
-			'title': title,
-			'mention_name': mention_name,
-			'is_group_admin': is_group_admin,
-			'timezone': timezone, # TODO: Support timezone objects
-			'password': password,
 		}
 		resp = self._requests.post(self.url+'/webhook', data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
