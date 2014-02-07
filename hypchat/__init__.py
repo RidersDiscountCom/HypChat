@@ -125,7 +125,7 @@ class HypChat(object):
 		resp = self._requests.post(self.rooms.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-	def create_user(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
+	def create_user(self, name, email, title='', mention_name='', is_group_admin=False, timezone='UTC', password=''):
 		"""
 		Creates a new user.
 		"""
