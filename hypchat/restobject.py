@@ -212,7 +212,7 @@ class User(RestObject):
 					data[key] = p
 			else:
 				data[key] = value
-		return self._requests.put(self.url, data=data).json()
+		self._requests.put(self.url, data=data)
 
 _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/user/[^/]+$')] = User
 
