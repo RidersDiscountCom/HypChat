@@ -87,6 +87,7 @@ class HypChat(object):
 		self.capabilities = Linker('https://api.hipchat.com/v2/capabilities', _requests=self._requests)
 		self.emoticons = Linker('https://api.hipchat.com/v2/emoticon', _requests=self._requests)
 		self.rooms = Linker('https://api.hipchat.com/v2/room', _requests=self._requests)
+		self.users_url = 'https://api.hipchat.com/v2/user'
 
 	def users(self, **ops):
 		"""users([guests=bool], [deleted=bool]) -> UserCollection
@@ -100,7 +101,7 @@ class HypChat(object):
 			params['include-guests'] = 'true'
 		if ops.get('deleted', False):
 			params['include-deleted'] = 'true'
-		resp = self._requests.get('https://api.hipchat.com/v2/user', params=params)
+		resp = self._requests.get(self.users_url, params=params)
 		return Linker._obj_from_text(resp.text, self._requests)
 
 
@@ -124,7 +125,7 @@ class HypChat(object):
 		resp = self._requests.post(self.rooms.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-	def create_user(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
+	def create_user(self, name, email, title='', mention_name='', is_group_admin=False, timezone='UTC', password=''):
 		"""
 		Creates a new user.
 		"""
@@ -137,7 +138,7 @@ class HypChat(object):
 			'timezone': timezone, # TODO: Support timezone objects
 			'password': password,
 		}
-		resp = self._requests.post(self.users.url, data=data)
+		resp = self._requests.post(self.users_url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
 	def get_room(self, id_or_name, **kwargs):
