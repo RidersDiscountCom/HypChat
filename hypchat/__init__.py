@@ -72,7 +72,7 @@ class _requests(Requests):
 		
 	def patch(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
-		return super(_requests, self).patch(url, ddata=ata, **kwargs)
+		return super(_requests, self).patch(url, data=data, **kwargs)
 		
 	def put(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
