@@ -133,16 +133,14 @@ class Room(RestObject):
 		"""
 		return self.notification(*p, **kw)
 
-	def notification(self, message, color='yellow', notify=False, format='html'):
+	def notification(self, message, color=None, notify=False, format='html'):
 		"""
 		Send a message to a room.
 		"""
-		self._requests.post(self.url+'/notification', data={
-			'color': color,
-			'message': message,
-			'notify': notify,
-			'message_format': format,
-		})
+		data = {'message': message, 'notify': notify, 'message_format': format}
+		if color:
+			data['color'] = color
+        self._requests.post(self.url+'/notification', data=data)
 
 	def topic(self, text):
 		"""
