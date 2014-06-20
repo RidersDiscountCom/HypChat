@@ -107,6 +107,7 @@ class RestObject(dict):
 	def delete(self):
 		self._requests.delete(self.url)
 
+_at_mention = re.compile('@[\w]+(?: |$)')
 
 class Room(RestObject):
 	def __init__(self, *p, **kw):
@@ -132,8 +133,6 @@ class Room(RestObject):
 		Will soon be reimplemented as a resource that posts a message to a room as a user.
 		"""
 		return self.notification(*p, **kw)
-
-_at_mention = re.compile('@[\w]+(?: |$)')
 
 	def notification(self, message, color=None, notify=False, format=None):
 		"""
