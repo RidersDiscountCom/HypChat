@@ -139,7 +139,7 @@ class Room(RestObject):
 		Send a message to a room.
 		"""
 		if not format:
-			if _at_mention.findall(message):
+			if len(_at_mention.findall(message)) > 0:
 				format = 'text'
 			else:
 				format = 'html'
