@@ -133,14 +133,21 @@ class Room(RestObject):
 		"""
 		return self.notification(*p, **kw)
 
-	def notification(self, message, color=None, notify=False, format='html'):
+_at_mention = re.compile('@[\w]+(?: |$)')
+
+	def notification(self, message, color=None, notify=False, format=None):
 		"""
 		Send a message to a room.
 		"""
+		if not format:
+			if _at_mention.findall(message):
+				format = 'text'
+			else:
+				format = 'html'
 		data = {'message': message, 'notify': notify, 'message_format': format}
 		if color:
 			data['color'] = color
-        self._requests.post(self.url+'/notification', data=data)
+		self._requests.post(self.url+'/notification', data=data)
 
 	def topic(self, text):
 		"""
