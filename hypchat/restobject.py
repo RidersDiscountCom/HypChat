@@ -107,6 +107,7 @@ class RestObject(dict):
 	def delete(self):
 		self._requests.delete(self.url)
 
+_at_mention = re.compile('@[\w]+(?: |$)')
 
 class Room(RestObject):
 	def __init__(self, *p, **kw):
@@ -133,16 +134,19 @@ class Room(RestObject):
 		"""
 		return self.notification(*p, **kw)
 
-	def notification(self, message, color='yellow', notify=False, format='html'):
+	def notification(self, message, color=None, notify=False, format=None):
 		"""
 		Send a message to a room.
 		"""
-		self._requests.post(self.url+'/notification', data={
-			'color': color,
-			'message': message,
-			'notify': notify,
-			'message_format': format,
-		})
+		if not format:
+			if len(_at_mention.findall(message)) > 0:
+				format = 'text'
+			else:
+				format = 'html'
+		data = {'message': message, 'notify': notify, 'message_format': format}
+		if color:
+			data['color'] = color
+		self._requests.post(self.url+'/notification', data=data)
 
 	def topic(self, text):
 		"""
