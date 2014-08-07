@@ -35,7 +35,6 @@ class _requests(Requests):
 		elif data is not None:
 			kwargs.setdefault('headers',{})['Content-Type'] = 'application/json'
 			rv = json.dumps(data, default=jsonify)
-			print rv
 			return rv
 
 	def _rl_sleep(self, until):
