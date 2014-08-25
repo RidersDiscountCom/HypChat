@@ -65,16 +65,17 @@ class Linker(object):
 				return obj
 		return json.JSONDecoder(object_hook=_object_hook).decode(text)
 
-	def __call__(self, expand=None):
+	def __call__(self, expand=None, **kwargs):
 		"""
 		Actually perform the request
 		"""
-		params = None
+		params = {}
 		if expand is not None:
 			if isinstance(expand, basestring):
 				params = {'expand': expand}
 			else:
 				params = {'expand': ','.join(expand)}
+		params.update(kwargs)
 
 		rv = self._obj_from_text(self._requests.get(self.url, params=params).text, self._requests)
 		rv._requests = self._requests
