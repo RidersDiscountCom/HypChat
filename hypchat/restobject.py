@@ -75,7 +75,11 @@ class Linker(object):
 				params = {'expand': expand}
 			else:
 				params = {'expand': ','.join(expand)}
-		params.update(kwargs)
+		if kwargs:
+			merge_params = {}
+			for k, v in kwargs.iteritems():
+				merge_params[k.replace('_', '-')] = v
+			params.update(merge_params)
 
 		rv = self._obj_from_text(self._requests.get(self.url, params=params).text, self._requests)
 		rv._requests = self._requests
