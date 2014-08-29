@@ -196,12 +196,14 @@ class User(RestObject):
 		if 'created' in self:
 			self['created'] = timestamp(self['created'])
 
-	def message(self, message):
+	def message(self, message, message_format='text', notify=False):
 		"""
 		Sends a user a private message.
 		"""
 		self._requests.post(self.url+'/message', data={
 			'message': message,
+			'message_format': message_format,
+			'notify': notify,
 		})
 
 	def save(self):
