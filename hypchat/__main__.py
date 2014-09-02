@@ -12,8 +12,8 @@ elif 'HIPCHAT_TOKEN' in os.environ:
     AUTH_TOKEN = os.environ['HIPCHAT_TOKEN']
 
 else:
-    print 'Authorization token not detected! The token is pulled from '\
-          '~/.hypchat, /etc/hypchat, or the environment variable HIPCHAT_TOKEN.'
+    print('Authorization token not detected! The token is pulled from '\
+          '~/.hypchat, /etc/hypchat, or the environment variable HIPCHAT_TOKEN.')
     sys.exit(1)
 
 hipchat = HypChat(AUTH_TOKEN)
