@@ -4,6 +4,7 @@ import re
 import datetime
 import dateutil.parser
 import dateutil.tz
+import six
 
 _urls_to_objects = {}
 
@@ -54,7 +55,7 @@ class Linker(object):
 			if 'links' in obj:
 				klass = RestObject
 				if 'self' in obj['links']:
-					for p, c in _urls_to_objects.iteritems():
+					for p, c in six.iteritems(_urls_to_objects):
 						if p.match(obj['links']['self']):
 							klass = c
 							break
@@ -71,13 +72,13 @@ class Linker(object):
 		"""
 		params = {}
 		if expand is not None:
-			if isinstance(expand, basestring):
+			if isinstance(expand, six.string_types):
 				params = {'expand': expand}
 			else:
 				params = {'expand': ','.join(expand)}
 		if kwargs:
 			merge_params = {}
-			for k, v in kwargs.iteritems():
+			for k, v in six.iteritems(kwargs):
 				merge_params[k.replace('_', '-')] = v
 			params.update(merge_params)
 
@@ -166,8 +167,8 @@ class Room(RestObject):
 		if date != 'recent':
 			date, tz = mktimestamp(date)
 		params = {
-			'date':date, 
-			'timezone': tz, 
+			'date':date,
+			'timezone': tz,
 			'max-results': maxResults,
 		}
 		resp = self._requests.get(self.url+'/history', params=params)
@@ -213,10 +214,10 @@ class User(RestObject):
 
 	def save(self):
 		data = {}
-		for key, value in self.iteritems():
+		for key, value in six.iteritems(self):
 			if key == 'presence' and isinstance(value, dict):
 				p = {}
-				for k,v in value.iteritems():
+				for k,v in six.iteritems(value):
 					if k in ('status', 'show'):
 						p[k] = v
 				if len(p) != 0:

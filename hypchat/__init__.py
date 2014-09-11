@@ -5,6 +5,7 @@ import warnings
 import sys
 import os
 import datetime
+import six
 from .requests import Requests, BearerAuth, HttpForbidden
 from .restobject import Linker
 
@@ -30,7 +31,7 @@ class _requests(Requests):
 
 	@staticmethod
 	def _data(data, kwargs):
-		if isinstance(data, basestring):
+		if isinstance(data, six.string_types):
 			return data
 		elif data is not None:
 			kwargs.setdefault('headers',{})['Content-Type'] = 'application/json'
@@ -52,7 +53,8 @@ class _requests(Requests):
 					# We're out of requests, chill
 					self._rl_sleep(self.rl_reset)
 				resp = super(_requests, self).request(method, url, **kwargs)
-			except HttpForbidden, e:
+			except HttpForbidden:
+				e = sys.exc_info()[1]
 				#FIXME: Is there a better way to do this?
 				if e.response.json()['error']['message'] == u'You have exceeded the rate limit. See https://www.hipchat.com/docs/api/rate_limiting':
 					self.rl_remaining = int(e.response.headers['x-ratelimit-remaining'])
@@ -68,11 +70,11 @@ class _requests(Requests):
 	def post(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
 		return super(_requests, self).post(url, data=data, **kwargs)
-		
+
 	def patch(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
 		return super(_requests, self).patch(url, data=data, **kwargs)
-		
+
 	def put(self, url, data=None, **kwargs):
 		data = self._data(data, kwargs)
 		return super(_requests, self).put(url, data=data, **kwargs)
