@@ -163,6 +163,11 @@ class Room(RestObject):
 		})
 
 	def history(self, date='recent', maxResults=200):
+		"""
+		Requests the room history.
+		
+		Note that if date is 'recent' (the default), HipChat will not return the complete history.
+		"""
 		tz = 'UTC'
 		if date != 'recent':
 			date, tz = mktimestamp(date)
