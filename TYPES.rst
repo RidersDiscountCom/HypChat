@@ -120,8 +120,9 @@ Methods
 ``topic()``
 	Sets the topic
 
-.. ``history()``
-	Grabs a "collection" of the history
+``history()``
+	Grabs a collection of the history. Note that the items of this collection are not full REST objects, 
+	just dictionaries. See `All Collections`_ for the interface.
 
 ``invite()``
 	Invite a user to this room
