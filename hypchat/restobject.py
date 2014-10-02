@@ -192,6 +192,23 @@ class Room(RestObject):
 		resp = self._requests.post(self.url+'/webhook', data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
+	def save(self):
+		owner = self.get('owner')
+		if not owner:
+			owner_id = None
+		else:
+			owner_id = owner.get('id')
+		payload = {
+			'name': self.get('name'),
+			'privacy': self.get('privacy', 'public'),
+			'is_archived': self.get('is_archived', False),
+			'is_guest_accessible': self.get('is_guest_accessible', False),
+			'topic': self.get('topic'),
+			'owner': owner,
+			'id': owner_id
+		}
+		return self._requests.put(self.url, data=json.dumps(payload))
+
 _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+$')] = Room
 
 class User(RestObject):
