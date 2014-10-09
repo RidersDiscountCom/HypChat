@@ -85,10 +85,10 @@ __all__ = ('HypChat',)
 class HypChat(object):
 	def __init__(self, token, endpoint='https://api.hipchat.com'):
 		self._requests = _requests(auth=BearerAuth(token))
-		self.capabilities = Linker('%s/v2/capabilities' % endpoint, _requests=self._requests)
-		self.emoticons = Linker('%s/v2/emoticon' % endpoint, _requests=self._requests)
-		self.rooms = Linker('%s/v2/room' % endpoint, _requests=self._requests)
-		self.users_url = '%s/v2/user' % endpoint
+		self.capabilities = Linker('{0}/v2/capabilities'.format(endpoint), _requests=self._requests)
+		self.emoticons = Linker('{0}/v2/emoticon'.format(endpoint), _requests=self._requests)
+		self.rooms = Linker('{0}/v2/room'.format(endpoint), _requests=self._requests)
+		self.users_url = '{0}/v2/user'.format(endpoint)
 		self.endpoint = endpoint
 
 	def users(self, **ops):
@@ -144,10 +144,10 @@ class HypChat(object):
 		return Linker._obj_from_text(resp.text, self._requests)
 
 	def get_room(self, id_or_name, **kwargs):
-		return self.fromurl('%s/v2/room/%s' % (self.endpoint, id_or_name), **kwargs)
+		return self.fromurl('{0}/v2/room/{1}'.format(self.endpoint, id_or_name), **kwargs)
 
 	def get_user(self, id_or_email, **kwargs):
-		return self.fromurl('%s/v2/user/%s' % (self.endpoint, id_or_email), **kwargs)
+		return self.fromurl('{0}/v2/user/{1}'.format(self.endpoint, id_or_email), **kwargs)
 
 	def get_emoticon(self, id_or_shortcut, **kwargs):
-		return self.fromurl('%s/v2/emoticon/%s' % (self.endpoint, id_or_shortcut), **kwargs)
+		return self.fromurl('{0}/v2/emoticon/{1}'.format(self.endpoint, id_or_shortcut), **kwargs)
