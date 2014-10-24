@@ -212,7 +212,8 @@ class Room(RestObject):
 			'owner': owner,
 			'id': owner_id
 		}
-		return self._requests.put(self.url, data=json.dumps(payload))
+		headers = {'content-type': 'application/json'}
+		return self._requests.put(self.url, data=json.dumps(payload), headers=headers)
 
 _urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+$')] = Room
 
