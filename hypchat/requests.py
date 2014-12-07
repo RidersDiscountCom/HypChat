@@ -245,6 +245,16 @@ class HttpExpectationFailed(HttpClientError):
 	"""
 _http_errors[417] = HttpExpectationFailed
 
+class HttpTooManyRequests(HttpClientError):
+	"""429 Too Many Requests
+
+	The 429 status code indicates that the user has sent too many
+  requests in a given amount of time ("rate limiting")
+
+  https://www.hipchat.com/docs/apiv2/rate_limiting
+	"""
+_http_errors[429] = HttpTooManyRequests
+
 
 class HttpServerError(requests.exceptions.HTTPError):
 	"""Server Error 5xx
