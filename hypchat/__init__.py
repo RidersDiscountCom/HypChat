@@ -6,7 +6,7 @@ import sys
 import os
 import datetime
 import six
-from .requests import Requests, BearerAuth, HttpForbidden
+from .requests import Requests, BearerAuth, HttpTooManyRequests
 from .restobject import Linker
 
 class RateLimitWarning(Warning):
@@ -53,11 +53,9 @@ class _requests(Requests):
 					# We're out of requests, chill
 					self._rl_sleep(self.rl_reset)
 				resp = super(_requests, self).request(method, url, **kwargs)
-			except HttpForbidden:
-				e = sys.exc_info()[1]
-				#FIXME: Is there a better way to do this?
-				if e.response.json()['error']['message'] == u'You have exceeded the rate limit. See https://www.hipchat.com/docs/api/rate_limiting':
-					self.rl_remaining = int(e.response.headers['x-ratelimit-remaining'])
+			except HttpTooManyRequests as e:
+				self.rl_remaining = int(e.response.headers['x-ratelimit-remaining']) 
+				if not self.rl_remaining:
 					self.rl_reset = float(e.response.headers['x-ratelimit-reset'])
 					continue # Try the request again
 				else:
