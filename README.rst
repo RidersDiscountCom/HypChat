@@ -111,9 +111,9 @@ Note that this may eat up many requests for large rooms.
 
 Navigation
 ----------
-Any time an object is referenced in a value (eg ``room['owner']``), a stub of that object is created, and the full object may be found with ``.self()``. Stubs contain the ID of the object, the name (if applicable), and any links that object has—including ``self``. This can be avoided by using the expand_ keyword.
+Any time an object is referenced in a value (eg ``room['owner']``), a stub of that object is created, and the full object may be found with ``.self()``. Stubs contain the ID of the object, the name (if applicable), and any links that object has-including ``self``. This can be avoided by using the expand_ keyword.
 
-Collections—such as ``rooms``, ``users``, and ``emots`` above—all have an ``'items'`` key containing their list of things. In addition, the ``.contents()`` method will generate all of the items, handling pagination. As usual, object
+Collections-such as ``rooms``, ``users``, and ``emots`` above-all have an ``'items'`` key containing their list of things. In addition, the ``.contents()`` method will generate all of the items, handling pagination. As usual, object
 
 Console
 -------
