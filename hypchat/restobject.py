@@ -215,7 +215,7 @@ class Room(RestObject):
 		headers = {'content-type': 'application/json'}
 		return self._requests.put(self.url, data=json.dumps(payload), headers=headers)
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+$')] = Room
+_urls_to_objects[re.compile(r'https://[^/]+/v2/room/[^/]+$')] = Room
 
 class User(RestObject):
 	def __init__(self, *p, **kw):
@@ -249,7 +249,7 @@ class User(RestObject):
 				data[key] = value
 		self._requests.put(self.url, data=data)
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/user/[^/]+$')] = User
+_urls_to_objects[re.compile(r'https://[^/]+/v2/user/[^/]+$')] = User
 
 class Collection(object):
 	"""
@@ -282,7 +282,7 @@ class MemberCollection(RestObject, Collection):
 		"""
 		self._requests.delete(self.url+'/%s' % user['id'])
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/member$')] = MemberCollection
+_urls_to_objects[re.compile(r'https://[^/]+/v2/room/[^/]+/member$')] = MemberCollection
 
 class UserCollection(RestObject, Collection):
 	def create(self, name, email, title=None, mention_name=None, is_group_admin=False, timezone='UTC', password=None):
@@ -301,7 +301,7 @@ class UserCollection(RestObject, Collection):
 		resp = self._requests.post(self.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/user$')] = UserCollection
+_urls_to_objects[re.compile(r'https://[^/]+/v2/user$')] = UserCollection
 
 class RoomCollection(RestObject, Collection):
 	def create(self, name, owner=Ellipsis, privacy='public', guest_access=True):
@@ -321,7 +321,7 @@ class RoomCollection(RestObject, Collection):
 		resp = self._requests.post(self.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room$')] = RoomCollection
+_urls_to_objects[re.compile(r'https://[^/]+/v2/room$')] = RoomCollection
 
 class WebhookCollection(RestObject, Collection):
 	def create(self, url, event, pattern=None, name=None):
@@ -340,12 +340,12 @@ class WebhookCollection(RestObject, Collection):
 		resp = self._requests.post(self.url, data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/webhook$')] = WebhookCollection
+_urls_to_objects[re.compile(r'https://[^/]+/v2/room/[^/]+/webhook$')] = WebhookCollection
 
 class EmoticonCollection(RestObject, Collection):
 	pass
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/emoticon$')] = EmoticonCollection
+_urls_to_objects[re.compile(r'https://[^/]+/v2/emoticon$')] = EmoticonCollection
 
 class Webhook(RestObject):
 	def __init__(self, *p, **kw):
@@ -353,7 +353,7 @@ class Webhook(RestObject):
 		if 'created' in self:
 			self['created'] = timestamp(self['created'])
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/webhook/[^/]+$')] = Webhook
+_urls_to_objects[re.compile(r'https://[^/]+/v2/room/[^/]+/webhook/[^/]+$')] = Webhook
 
 
 class HistoryCollection(RestObject, Collection):
@@ -363,4 +363,4 @@ class HistoryCollection(RestObject, Collection):
 			if 'date' in item:
 				item['date'] = timestamp(item['date'])
 
-_urls_to_objects[re.compile(r'^https://api.hipchat.com/v2/room/[^/]+/history$')] = HistoryCollection
+_urls_to_objects[re.compile(r'https://[^/]+/v2/room/[^/]+/history$')] = HistoryCollection

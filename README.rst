@@ -81,6 +81,12 @@ First, create a HypChat object with the token
 
 	hc = HypChat("mytoken")
 
+If you use Hipchat Server
+
+::
+
+	hc = HypChat("mytoken", endpoint="https://hipchat.example.com")
+
 There are several root links:
 
 ::
