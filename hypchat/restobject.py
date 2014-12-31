@@ -123,15 +123,6 @@ class Room(RestObject):
 		if 'created' in self:
 			self['created'] = timestamp(self['created'])
 
-	def save(self):
-		data = {}
-		for key in ('name', 'privacy', 'is_archived', 'is_guest_accessible', 'topic'):
-			data[key] = self[key]
-		data['owner'] = {
-			'id': self['owner']['id']
-		}
-		self._requests.put(self.url, data=data)
-
 	def reply(self, message, parent_message_id):
 		"""
 		Send a reply to a message
@@ -217,23 +208,13 @@ class Room(RestObject):
 		resp = self._requests.post(self.url+'/webhook', data=data)
 		return Linker._obj_from_text(resp.text, self._requests)
 
-	def save(self):
-		owner = self.get('owner')
-		if not owner:
-			owner_id = None
-		else:
-			owner_id = owner.get('id')
-		payload = {
-			'name': self.get('name'),
-			'privacy': self.get('privacy', 'public'),
-			'is_archived': self.get('is_archived', False),
-			'is_guest_accessible': self.get('is_guest_accessible', False),
-			'topic': self.get('topic'),
-			'owner': owner,
-			'id': owner_id
-		}
-		headers = {'content-type': 'application/json'}
-		return self._requests.put(self.url, data=json.dumps(payload), headers=headers)
+ 	def save(self):
+		data = {}
+		for key in ('name', 'privacy', 'is_archived', 'is_guest_accessible', 'topic'):
+			data[key] = self[key]
+		data['owner'] = {'id': self['owner']['id']}
+ 		headers = {'content-type': 'application/json'}
+		return self._requests.put(self.url, data=json.dumps(data), headers=headers)
 
 _urls_to_objects[re.compile(r'https://[^/]+/v2/room/[^/]+$')] = Room
 
