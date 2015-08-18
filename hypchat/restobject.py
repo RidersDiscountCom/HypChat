@@ -254,6 +254,24 @@ class User(RestObject):
 			'message_format': message_format,
 			'notify': notify,
 		})
+		
+	def history(self, maxResults=200, notBefore=None):
+		"""
+		Requests the users private message history.
+		
+		::param not_before: the oldest message id to be returned. If not set the history is limited by maxResults only
+		"""
+		tz = 'UTC'
+		params = {
+			'timezone': tz,
+			'max-results': maxResults,
+			
+		}
+		if notBefore is not None:
+			params["not-before"] = notBefore
+		
+		resp = self._requests.get(self.url+'/history/latest', params=params)
+		return Linker._obj_from_text(resp.text, self._requests)
 
 	def save(self):
 		data = {}
