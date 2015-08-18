@@ -183,6 +183,21 @@ class Room(RestObject):
 		}
 		resp = self._requests.get(self.url+'/history', params=params)
 		return Linker._obj_from_text(resp.text, self._requests)
+	
+	def latest(self, not_before=None, maxResults=200):
+		"""
+		Return the latest room history.
+
+		If ``not_before`` is provided, messages that precede the message id will not be returned
+		"""
+		params = {
+			"max-results": maxResults
+		}
+		if not_before is not None:
+			params["not-before"] = not_before
+
+		resp = self._requests.get(self.url+'/history/latest', params=params)
+		return Linker._obj_from_text(resp.text, self._requests)
 
 	def invite(self, user, reason):
 		self._requests.post(self.url+'/invite/%s' % user['id'], data={
