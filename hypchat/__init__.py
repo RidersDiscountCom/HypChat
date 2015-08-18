@@ -81,8 +81,8 @@ class _requests(Requests):
 __all__ = ('HypChat',)
 
 class HypChat(object):
-	def __init__(self, token, endpoint='https://api.hipchat.com'):
-		self._requests = _requests(auth=BearerAuth(token))
+	def __init__(self, token, endpoint='https://api.hipchat.com', verify=True):
+		self._requests = _requests(auth=BearerAuth(token), verify=verify)
 		self.capabilities = Linker('{0}/v2/capabilities'.format(endpoint), _requests=self._requests)
 		self.emoticons = Linker('{0}/v2/emoticon'.format(endpoint), _requests=self._requests)
 		self.rooms = Linker('{0}/v2/room'.format(endpoint), _requests=self._requests)
