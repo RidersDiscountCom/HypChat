@@ -132,13 +132,18 @@ class Room(RestObject):
 		}
 		self._requests.put(self.url, data=data)
 
-	def message(self, *p, **kw):
+	def reply(self, message, parent_message_id):
 		"""
-		Redirects to the /notification URL.
+		Send a reply to a message
+		"""
+		data = {'message': message, 'parentMessageId': parent_message_id}
+		self._requests.post(self.url+'/reply', data=data)
 
-		Will soon be reimplemented as a resource that posts a message to a room as a user.
+	def message(self, message):
 		"""
-		return self.notification(*p, **kw)
+		Redirects to the /reply URL with an empty parentMessageId
+		"""
+		return self.reply(message, parent_message_id='')
 
 	def notification(self, message, color=None, notify=False, format=None):
 		"""
