@@ -8,7 +8,7 @@ config.read([os.path.expanduser('~/.hypchat'), '/etc/hypchat'])
 AUTH_TOKEN = config.get('HipChat', 'token')
 
 if 'HIPCHAT_TOKEN' in os.environ:
-	AUTH_TOKEN = os.environ['HIPCHAT_TOKEN']
+    AUTH_TOKEN = os.environ['HIPCHAT_TOKEN']
 
 hipchat = HypChat(AUTH_TOKEN)
 
@@ -19,4 +19,4 @@ print room['name']
 hist = room.history(datetime.datetime.utcnow(), maxResults=500)
 fullhist = []
 for item in hist.contents():
-	print item['message']
+    print item['message']
