@@ -15,7 +15,7 @@ AUTH_TOKEN = config.get('HipChat', 'token')
 hipchat = HypChat(AUTH_TOKEN)
 
 with open('emots.html', 'w') as html:
-	html.write("""
+    html.write("""
 <!DOCTYPE html>
 <html>
 	<head>
@@ -23,11 +23,11 @@ with open('emots.html', 'w') as html:
 	</head>
 	<body>
 """)
-	for emot in hipchat.emoticons().contents():
-		html.write("""
+    for emot in hipchat.emoticons().contents():
+        html.write("""
 <img src="{url}" alt="{shortcut}" title="{shortcut}">
 """.format(**emot))
 
-	html.write("""
+    html.write("""
 	</body>
 </html>""")

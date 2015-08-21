@@ -12,7 +12,7 @@ elif 'HIPCHAT_TOKEN' in os.environ:
     AUTH_TOKEN = os.environ['HIPCHAT_TOKEN']
 
 else:
-    print('Authorization token not detected! The token is pulled from '\
+    print('Authorization token not detected! The token is pulled from ' \
           '~/.hypchat, /etc/hypchat, or the environment variable HIPCHAT_TOKEN.')
     sys.exit(1)
 
@@ -36,7 +36,9 @@ endpoint = hipchat.endpoint
 
 try:
     import IPython
+
     IPython.embed()
 except ImportError:
     import code
+
     code.interact(local=locals())
