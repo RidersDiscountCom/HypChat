@@ -144,7 +144,8 @@ class Room(RestObject):
         """
         Redirects to the /reply URL with an empty parentMessageId
         """
-        return self.reply(message, parent_message_id='')
+        data = {'message': message}
+        self._requests.post(self.url + '/message', data=data)
 
     def notification(self, message, color=None, notify=False, format=None):
         """
