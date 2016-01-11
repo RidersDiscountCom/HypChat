@@ -32,7 +32,7 @@ def read_file(name):
 
 
 setup(name='hypchat',
-      version='0.20',
+      version='0.21',
       description="Package for HipChat's v2 API",
       long_description=read_file('README.rst'),
       author='Riders Discount',
