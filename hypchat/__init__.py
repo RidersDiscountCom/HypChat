@@ -105,6 +105,8 @@ class HypChat(object):
             params['include-guests'] = 'true'
         if ops.get('deleted', False):
             params['include-deleted'] = 'true'
+        if 'expand' in ops:
+            params['expand'] = ops['expand']
         resp = self._requests.get(self.users_url, params=params)
         return Linker._obj_from_text(resp.text, self._requests)
 
