@@ -142,7 +142,7 @@ class Room(RestObject):
 
     def message(self, message):
         """
-        Redirects to the /reply URL with an empty parentMessageId
+        Allows a user to send a message to a room.
         """
         data = {'message': message}
         self._requests.post(self.url + '/message', data=data)
